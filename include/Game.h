@@ -1,5 +1,5 @@
-#ifndef GAME_HPP
-#define GAME_HPP
+#ifndef CHESS_GAME_H
+#define CHESS_GAME_H
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -26,4 +26,4 @@ private:
     void render();
 };
 
-#endif // GAME_HPP 
+#endif // CHESS_GAME_H

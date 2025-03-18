@@ -1,3 +1,5 @@
 SDL/
+.idea/
+build
 chess
 .DS_Store

@@ -7,7 +7,7 @@ INC_DIR = include
 BUILD_DIR = build
 
 # Compiler flags
-CXXFLAGS = `pkg-config --cflags sdl3` -I$(INC_DIR)
+CXXFLAGS = -std=c++17 `pkg-config --cflags sdl3` -I$(INC_DIR)
 LDFLAGS = `pkg-config --libs sdl3`
 
 # Target executable
