@@ -1,6 +1,10 @@
 #ifndef CHESS_H
 #define CHESS_H
 
+#include <cstdint>
+
+using U64 = std::uint64_t;
+
 enum Color {
     WHITE,
     BLACK,

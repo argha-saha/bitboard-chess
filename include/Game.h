@@ -5,14 +5,12 @@
 #include "Chess.h"
 #include <iostream>
 
-typedef std::uint64_t U64;
-
 class Game {
 private:
     Board board;
 public:
     Game();
-    const char* getPieceChar(int tile) const;
+    [[nodiscard]] const char* getPieceChar(int tile) const;
     void printBoard() const;
     Color getOppositeColor();
 };

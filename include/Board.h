@@ -3,8 +3,6 @@
 
 #include "Chess.h"
 
-typedef std::uint64_t U64;
-
 class Board {
 private:
     // White piece bitboards

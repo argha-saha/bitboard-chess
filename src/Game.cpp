@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game() {}
+Game::Game() = default;
 
 const char* Game::getPieceChar(int tile) const {
     U64 mask = (1ULL << tile);
@@ -20,7 +20,7 @@ const char* Game::getPieceChar(int tile) const {
     if (board.getBlackQueens() & mask) return u8"\u265B";
     if (board.getBlackKing() & mask) return u8"\u265A";
 
-    return ".";
+    return "_";
 }
 
 void Game::printBoard() const {
@@ -35,5 +35,5 @@ void Game::printBoard() const {
         std::cout << "\n";
     }
 
-    std::cout << " a b c d e f g h\n\n";
+    std::cout << "  a b c d e f g h\n\n";
 }
