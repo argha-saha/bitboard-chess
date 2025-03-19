@@ -53,8 +53,22 @@ U64 Board::getOccupancy() const {
 
 bool Board::isTileEmpty(int tile) const {
     U64 mask = (1ULL << tile);
-    bool res = (getOccupancy() & mask) == 0ULL;
-    return res;
+    bool res = getOccupancy() & mask;
+    return res == 0ULL;
+}
+
+bool Board::isWhite(int tile) const {
+    U64 mask = (1ULL << tile);
+    U64 white = (whitePawns | whiteKnights | whiteBishops | 
+                 whiteRooks | whiteQueens | whiteKing) & mask;
+    return white != 0ULL;
+}
+
+bool Board::isBlack(int tile) const {
+    U64 mask = (1ULL << tile);
+    U64 black = (blackPawns | blackKnights | blackBishops | 
+                 blackRooks | blackQueens | blackKing) & mask;
+    return black != 0ULL;
 }
 
 int Board::getFile(int tile) {
