@@ -12,6 +12,8 @@ set(SOURCES
     src/Application.cpp
     src/Game.cpp
     src/Board.cpp
+        src/Move.cpp
+        include/Move.h
 )
 
 # Find SDL3

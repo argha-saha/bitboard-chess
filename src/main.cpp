@@ -3,7 +3,7 @@
 #include "Board.h"
 #include <cassert>
 
-void testPrintBoard() {
+void printBoardTest() {
     Game game;
     game.printBoard();
 }
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 //
 //    app.run();
 
-    testPrintBoard();
+    printBoardTest();
     boardFileRankTests();
     boardIndexToTileTest();
     boardTileToIndexTest();
