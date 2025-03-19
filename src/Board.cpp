@@ -145,6 +145,20 @@ std::string Board::indexToTile(int index) {
     return res;
 }
 
-int Board::tileToIndex(int tile) {
+int Board::tileToIndex(const std::string& tile) {
+    if (tile.size() != 2) {
+        return -1;
+    }
 
+    char file = static_cast<char>(std::tolower(static_cast<unsigned char>(tile[0])));
+    char rank = tile[1];
+
+    if (file < 'a' || file > 'h' || rank < '1' || rank > '8') {
+        return -1;
+    }
+
+    int f = file - 'a';
+    int r = rank - '1';
+
+    return r * 8 + f;
 }

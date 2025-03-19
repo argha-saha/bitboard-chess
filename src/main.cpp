@@ -22,7 +22,11 @@ void boardIndexToTileTest() {
 }
 
 void boardTileToIndexTest() {
+    int index = Board::tileToIndex("h8");
+    assert(index == 63);
 
+    index = Board::tileToIndex("h9");
+    assert(index == -1);
 }
 
 int main(int argc, char *argv[])
@@ -38,6 +42,7 @@ int main(int argc, char *argv[])
     testPrintBoard();
     boardFileRankTests();
     boardIndexToTileTest();
+    boardTileToIndexTest();
     
     return 0;
 }

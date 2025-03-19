@@ -66,7 +66,7 @@ public:
     static std::string indexToTile(int index);
 
     // Converts a tile to an index (e.g. h8 => 63)
-    static int tileToIndex(int tile);
+    static int tileToIndex(const std::string& tile);
 };
 
 #endif // CHESS_BOARD_H
