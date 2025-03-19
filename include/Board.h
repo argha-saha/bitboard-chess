@@ -46,18 +46,18 @@ public:
     static int getRank(int tile);
 
     // Getters
-    U64 getWhitePawns() const;
-    U64 getWhiteKnights() const;
-    U64 getWhiteBishops() const;
-    U64 getWhiteRooks() const;
-    U64 getWhiteQueens() const;
-    U64 getWhiteKing() const;
-    U64 getBlackPawns() const;
-    U64 getBlackKnights() const;
-    U64 getBlackBishops() const;
-    U64 getBlackRooks() const;
-    U64 getBlackQueens() const;
-    U64 getBlackKing() const;
+    [[nodiscard]] U64 getWhitePawns() const;
+    [[nodiscard]] U64 getWhiteKnights() const;
+    [[nodiscard]] U64 getWhiteBishops() const;
+    [[nodiscard]] U64 getWhiteRooks() const;
+    [[nodiscard]] U64 getWhiteQueens() const;
+    [[nodiscard]] U64 getWhiteKing() const;
+    [[nodiscard]] U64 getBlackPawns() const;
+    [[nodiscard]] U64 getBlackKnights() const;
+    [[nodiscard]] U64 getBlackBishops() const;
+    [[nodiscard]] U64 getBlackRooks() const;
+    [[nodiscard]] U64 getBlackQueens() const;
+    [[nodiscard]] U64 getBlackKing() const;
 };
 
 #endif // CHESS_BOARD_H

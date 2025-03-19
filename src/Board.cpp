@@ -19,7 +19,7 @@ Board::Board() {
     blackKingMoved = false;
     blackKingSideRookMoved = false;
     blackQueenSideRookMoved = false;
-    turn = WHITE;
+    turn = Color::WHITE;
 }
 
 void Board::initBoard() {
@@ -41,7 +41,7 @@ void Board::initBoard() {
     blackKingMoved = false;
     blackKingSideRookMoved = false;
     blackQueenSideRookMoved = false;
-    turn = WHITE;
+    turn = Color::WHITE;
 }
 
 U64 Board::getOccupancy() const {

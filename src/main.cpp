@@ -1,6 +1,11 @@
 #include "Application.h"
 #include "Game.h"
 
+void testPrintBoard() {
+    Game game;
+    game.printBoard();
+}
+
 int main(int argc, char *argv[])
 {
 //    Application app;
@@ -11,8 +16,7 @@ int main(int argc, char *argv[])
 //
 //    app.run();
 
-    Game game;
-    game.printBoard();
+    testPrintBoard();
     
     return 0;
 }
