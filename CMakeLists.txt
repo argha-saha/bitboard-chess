@@ -10,7 +10,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(SOURCES
     src/main.cpp
     src/Application.cpp
-        src/Game.cpp
+    src/Game.cpp
+    src/Board.cpp
 )
 
 # Find SDL3
@@ -19,10 +20,11 @@ find_package(SDL3 REQUIRED)
 # Create executable
 add_executable(chess ${SOURCES})
 
+# Include directories
+target_include_directories(chess PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
 # Link SDL3
 target_link_libraries(chess PRIVATE SDL3::SDL3)
-
-target_include_directories(chess PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 # Set output directory
 set_target_properties(chess PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

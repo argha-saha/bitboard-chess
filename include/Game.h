@@ -3,6 +3,7 @@
 
 #include "Board.h"
 #include "Chess.h"
+#include <iostream>
 
 typedef std::uint64_t U64;
 
@@ -11,7 +12,7 @@ private:
     Board board;
 public:
     Game();
-    char getPieceChar(int tile) const;
+    const char* getPieceChar(int tile) const;
     void printBoard() const;
     Color getOppositeColor();
 };

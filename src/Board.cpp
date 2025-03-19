@@ -85,3 +85,51 @@ int Board::getFile(int tile) {
 int Board::getRank(int tile) {
     return tile / 8;
 }
+
+U64 Board::getWhitePawns() const {
+    return whitePawns;
+}
+
+U64 Board::getWhiteKnights() const {
+    return whiteKnights;
+}
+
+U64 Board::getWhiteBishops() const {
+    return whiteBishops;
+}
+
+U64 Board::getWhiteRooks() const {
+    return whiteRooks;
+}
+
+U64 Board::getWhiteQueens() const {
+    return whiteQueens;
+}
+
+U64 Board::getWhiteKing() const {
+    return whiteKing;
+}
+
+U64 Board::getBlackPawns() const {
+    return blackPawns;
+}
+
+U64 Board::getBlackKnights() const {
+    return blackKnights;
+}
+
+U64 Board::getBlackBishops() const {
+    return blackBishops;
+}
+
+U64 Board::getBlackRooks() const {
+    return blackRooks;
+}
+
+U64 Board::getBlackQueens() const {
+    return blackQueens;
+}
+
+U64 Board::getBlackKing() const {
+    return blackKing;
+}

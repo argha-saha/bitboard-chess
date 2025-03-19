@@ -1,5 +1,7 @@
-SDL/
+.cache/
 .idea/
-build
+SDL/
+build/
+cmake-build-debug/
 chess
 .DS_Store

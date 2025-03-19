@@ -1,9 +1,7 @@
 #ifndef CHESS_BOARD_H
 #define CHESS_BOARD_H
 
-#include <vector>
 #include "Chess.h"
-#include "Piece.h"
 
 typedef std::uint64_t U64;
 
@@ -48,6 +46,20 @@ public:
     bool isBlack(int tile) const;
     static int getFile(int tile);
     static int getRank(int tile);
+
+    // Getters
+    U64 getWhitePawns() const;
+    U64 getWhiteKnights() const;
+    U64 getWhiteBishops() const;
+    U64 getWhiteRooks() const;
+    U64 getWhiteQueens() const;
+    U64 getWhiteKing() const;
+    U64 getBlackPawns() const;
+    U64 getBlackKnights() const;
+    U64 getBlackBishops() const;
+    U64 getBlackRooks() const;
+    U64 getBlackQueens() const;
+    U64 getBlackKing() const;
 };
 
 #endif // CHESS_BOARD_H
