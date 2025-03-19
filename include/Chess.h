@@ -3,7 +3,8 @@
 
 enum Color {
     WHITE,
-    BLACK
+    BLACK,
+    EMPTY
 };
 
 enum Type {

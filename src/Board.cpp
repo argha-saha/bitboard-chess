@@ -57,6 +57,13 @@ bool Board::isTileEmpty(int tile) const {
     return res == 0ULL;
 }
 
+Color Board::getPieceColor(int tile) const {
+    U64 mask = (1ULL << tile);
+    if (isWhite(tile)) return WHITE;
+    if (isBlack(tile)) return BLACK;
+    return EMPTY;
+}
+
 bool Board::isWhite(int tile) const {
     U64 mask = (1ULL << tile);
     U64 white = (whitePawns | whiteKnights | whiteBishops | 

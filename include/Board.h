@@ -43,6 +43,7 @@ public:
     void initBoard();
     U64 getOccupancy() const;
     bool isTileEmpty(int tile) const;
+    Color getPieceColor(int tile) const;
     bool isWhite(int tile) const;
     bool isBlack(int tile) const;
     static int getFile(int tile);
