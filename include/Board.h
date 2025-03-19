@@ -42,11 +42,10 @@ public:
     Board();
     void initBoard();
     U64 getOccupancy() const;
-    bool isTileEmpty() const;
+    bool isTileEmpty(int tile) const;
     bool isWhite() const;
-
-    static int getRank();
-    static int getFile();
+    static int getFile(int tile);
+    static int getRank(int tile);
 };
 
 #endif // CHESS_BOARD_H
