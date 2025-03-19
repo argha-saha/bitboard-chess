@@ -1,8 +1,8 @@
-#include "Game.h"
+#include "Application.h"
 
-Game::Game() : window(nullptr), renderer(nullptr), isRunning(false) {}
+Application::Application() : window(nullptr), renderer(nullptr), isRunning(false) {}
 
-bool Game::init() {
+bool Application::init() {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_LogError(
             SDL_LOG_CATEGORY_APPLICATION, 
@@ -33,7 +33,7 @@ bool Game::init() {
     return true;
 }
 
-void Game::handleEvents() {
+void Application::handleEvents() {
     SDL_Event event;
     SDL_PollEvent(&event);
 
@@ -42,7 +42,7 @@ void Game::handleEvents() {
     }
 }
 
-void Game::render() {
+void Application::render() {
     SDL_SetRenderDrawColor(renderer, 35, 40, 50, 255);
     SDL_RenderClear(renderer);
 
@@ -80,14 +80,14 @@ void Game::render() {
     SDL_RenderPresent(renderer);
 }
 
-void Game::run() {
+void Application::run() {
     while (isRunning) {
         handleEvents();
         render();
     }
 }
 
-void Game::cleanup() {
+void Application::cleanup() {
     if (renderer) {
         SDL_DestroyRenderer(renderer);
         renderer = nullptr;
@@ -101,6 +101,6 @@ void Game::cleanup() {
     SDL_Quit();
 } 
 
-Game::~Game() {
+Application::~Application() {
     cleanup();
 }

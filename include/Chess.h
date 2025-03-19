@@ -1,12 +1,12 @@
-#ifndef CHESS_CHESS_H
-#define CHESS_CHESS_H
+#ifndef CHESS_H
+#define CHESS_H
 
-enum Type {
+enum Color {
     WHITE,
     BLACK
 };
 
-enum Color {
+enum Type {
     PAWN,
     KNIGHT,
     BISHOP,
@@ -15,4 +15,4 @@ enum Color {
     KING
 };
 
-#endif // CHESS_CHESS_H
+#endif // CHESS_H

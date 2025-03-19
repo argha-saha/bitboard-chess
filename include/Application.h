@@ -1,16 +1,16 @@
-#ifndef CHESS_GAME_H
-#define CHESS_GAME_H
+#ifndef CHESS_APPLICATION_H
+#define CHESS_APPLICATION_H
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
-class Game {
+class Application {
 public:
-    Game();
+    Application();
     bool init();
     void run();
     void cleanup();
-    ~Game();
+    ~Application();
 
 private:
     SDL_Window* window;
@@ -26,4 +26,4 @@ private:
     void render();
 };
 
-#endif // CHESS_GAME_H
+#endif // CHESS_APPLICATION_H

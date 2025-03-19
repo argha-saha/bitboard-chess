@@ -1,8 +1,8 @@
-#include "Game.h"
+#include "Application.h"
 
 int main(int argc, char *argv[])
 {
-    Game game;
+    Application game;
     
     if (!game.init()) {
         return 1;
