@@ -78,14 +78,6 @@ bool Board::isBlack(int tile) const {
     return black != 0ULL;
 }
 
-int Board::getFile(int tile) {
-    return tile % 8;
-}
-
-int Board::getRank(int tile) {
-    return tile / 8;
-}
-
 U64 Board::getWhitePawns() const {
     return whitePawns;
 }
@@ -132,4 +124,27 @@ U64 Board::getBlackQueens() const {
 
 U64 Board::getBlackKing() const {
     return blackKing;
+}
+
+int Board::getFile(int tile) {
+    return tile % 8;
+}
+
+int Board::getRank(int tile) {
+    return tile / 8;
+}
+
+std::string Board::indexToTile(int index) {
+    int file = getFile(index);
+    int rank = getRank(index);
+
+    std::string res;
+    res.push_back(char('a' + file));
+    res.push_back(char('1' + rank));
+
+    return res;
+}
+
+int Board::tileToIndex(int tile) {
+
 }
