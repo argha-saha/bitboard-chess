@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.28)
+
+project(Chess LANGUAGES CXX)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Source files
+set(SOURCES
+    src/main.cpp
+    src/Application.cpp
+        src/Game.cpp
+)
+
+# Find SDL3
+find_package(SDL3 REQUIRED)
+
+# Create executable
+add_executable(chess ${SOURCES})
+
+# Link SDL3
+target_link_libraries(chess PRIVATE SDL3::SDL3)
+
+target_include_directories(chess PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
+# Set output directory
+set_target_properties(chess PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
