@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Game.h"
 #include "Board.h"
+#include "Move.h"
 #include <cassert>
 
 void printBoardTest() {
@@ -29,6 +30,18 @@ void boardTileToIndexTest() {
     assert(index == -1);
 }
 
+void moveStringTest() {
+    Move moveStr = Move::moveString("e2e4");
+    assert(moveStr.getFromTile() == 12);
+    assert(moveStr.getToTile() == 28);
+    assert(moveStr.getPromotion() == '\0');
+
+    moveStr = Move::moveString("e7e8q");
+    assert(moveStr.getFromTile() == 52);
+    assert(moveStr.getToTile() == 60);
+    assert(moveStr.getPromotion() == 'q');
+}
+
 int main(int argc, char *argv[])
 {
 //    Application app;
@@ -43,6 +56,7 @@ int main(int argc, char *argv[])
     boardFileRankTests();
     boardIndexToTileTest();
     boardTileToIndexTest();
+    moveStringTest();
     
     return 0;
 }

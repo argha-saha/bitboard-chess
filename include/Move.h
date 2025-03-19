@@ -7,13 +7,15 @@ class Move {
 private:
     int fromTile;
     int toTile;
+    char promotion;
 
 public:
-    Move(int fromTile, int toTile);
+    Move(int fromTile, int toTile, char promotion);
+    [[nodiscard]] int getFromTile() const;
+    [[nodiscard]] int getToTile() const;
+    [[nodiscard]] char getPromotion() const;
 
     static Move moveString(const std::string& move);
-
-    // TODO: Add promotion logic (reference UCI)
 };
 
 #endif // CHESS_MOVE_H
