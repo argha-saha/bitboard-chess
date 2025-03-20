@@ -9,9 +9,9 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
         return false;
     }
 
-    // Turn check
     Color movingColor = board.getPieceColor(from);
 
+    // Checks if piece exists and turn is correct
     if (movingColor != board.getTurn()) {
         return false;
     }
@@ -21,6 +21,39 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
 
     if (toColor == movingColor) {
         return false;
+    }
+
+    // Get file/rank of source and destination
+    int fromFile = Board::getFile(from);
+    int fromRank = Board::getRank(from);
+    int toFile = Board::getFile(to);
+    int toRank = Board::getRank(to);
+
+    // Calculate changes in file and rank
+    int dFile = toFile - fromFile;
+    int dRank = toRank - fromRank;
+
+    U64 fromMask = (1ULL << from);
+
+    bool whiteTurn = (movingColor == Color::WHITE);
+
+    if (whiteTurn) {
+        // Pawn logic
+        if (board.getWhitePawns() & fromMask) {
+
+        }
+
+        // Knight logic
+
+        // Bishop logic
+
+        // Rook logic
+
+        // Queen logic
+
+        // King logic
+    } else {
+
     }
 
     return true;

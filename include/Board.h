@@ -38,11 +38,11 @@ private:
 public:
     Board();
     void initBoard();
-    U64 getOccupancy() const;
-    bool isTileEmpty(int tile) const;
-    Color getPieceColor(int tile) const;
-    bool isWhite(int tile) const;
-    bool isBlack(int tile) const;
+    [[nodiscard]] U64 getOccupancy() const;
+    [[nodiscard]] bool isTileEmpty(int tile) const;
+    [[nodiscard]] Color getPieceColor(int tile) const;
+    [[nodiscard]] bool isWhite(int tile) const;
+    [[nodiscard]] bool isBlack(int tile) const;
 
     // Getters
     [[nodiscard]] U64 getWhitePawns() const;
