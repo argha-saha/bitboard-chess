@@ -166,3 +166,66 @@ int Board::tileToIndex(const std::string& tile) {
 
     return r * 8 + f;
 }
+
+void Board::setWhitePawns(U64 value) {
+    whitePawns = value;
+}
+
+void Board::setWhiteKnights(U64 value) {
+    whiteKnights = value;
+}
+
+void Board::setWhiteBishops(U64 value) {
+    whiteBishops = value;
+}
+void Board::setWhiteRooks(U64 value) {
+    whiteRooks = value;
+}
+
+void Board::setWhiteQueens(U64 value) {
+    whiteQueens = value;
+}
+
+void Board::setWhiteKing(U64 value) {
+    whiteKing = value;
+}
+
+void Board::setBlackPawns(U64 value) {
+    blackPawns = value;
+}
+
+void Board::setBlackKnights(U64 value) {
+    blackKnights = value;
+}
+
+void Board::setBlackBishops(U64 value) {
+    blackBishops = value;
+}
+
+void Board::setBlackRooks(U64 value) {
+    blackRooks = value;
+}
+
+void Board::setBlackQueens(U64 value) {
+    blackQueens = value;
+}
+
+void Board::setBlackKing(U64 value) {
+    blackKing = value;
+}
+
+void Board::clearPiece(int tile) {
+    U64 mask = ~(1ULL << tile);
+    whitePawns &= mask;
+    whiteKnights &= mask;
+    whiteBishops &= mask;
+    whiteRooks &= mask;
+    whiteQueens &= mask;
+    whiteKing &= mask;
+    blackPawns &= mask;
+    blackKnights &= mask;
+    blackBishops &= mask;
+    blackRooks &= mask;
+    blackQueens &= mask;
+    blackKing &= mask;
+}

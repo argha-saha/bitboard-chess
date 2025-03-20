@@ -59,6 +59,21 @@ public:
     [[nodiscard]] U64 getBlackKing() const;
     [[nodiscard]] Color getTurn() const;
 
+    // Setters
+    void setWhitePawns(U64 value);
+    void setWhiteKnights(U64 value);
+    void setWhiteBishops(U64 value);
+    void setWhiteRooks(U64 value);
+    void setWhiteQueens(U64 value);
+    void setWhiteKing(U64 value);
+    void setBlackPawns(U64 value);
+    void setBlackKnights(U64 value);
+    void setBlackBishops(U64 value);
+    void setBlackRooks(U64 value);
+    void setBlackQueens(U64 value);
+    void setBlackKing(U64 value);
+    void clearPiece(int tile);
+
     // Static methods
     static int getFile(int tile);
     static int getRank(int tile);
