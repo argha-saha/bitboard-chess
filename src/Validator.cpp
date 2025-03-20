@@ -40,7 +40,7 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
     if (whiteTurn) {
         // Pawn logic
         if (board.getWhitePawns() & fromMask) {
-
+            // TODO: Call canMoveToTile() and add additional logic
         }
 
         // Knight logic
