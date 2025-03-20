@@ -9,7 +9,13 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
         return false;
     }
 
+    // Same tile
+    if (from == to) {
+        return false;
+    }
+
     Color movingColor = board.getPieceColor(from);
+    Type pieceType = board.getPieceType(from);
 
     // Checks if piece exists and turn is correct
     if (movingColor != board.getTurn()) {
@@ -33,44 +39,91 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
     int dFile = toFile - fromFile;
     int dRank = toRank - fromRank;
 
-    U64 fromMask = (1ULL << from);
-
     bool whiteTurn = (movingColor == Color::WHITE);
 
     if (whiteTurn) {
         // Pawn logic
-        if (board.getWhitePawns() & fromMask) {
-            // TODO: Add additional logic
-            return Pawn::canMoveToTile(dFile, dRank);
+        if (pieceType == Type::PAWN) {
+            // Forward moves (single or double step)
+            if (dFile == 0 && dRank > 0) {
+                // Check if destination is empty
+                if (!board.isTileEmpty(to)) {
+                    return false;
+                }
+                
+                // For double step, also check if the tile in between is empty
+                if (dRank == 2 && !board.isTileEmpty(from + 8)) {
+                    return false;
+                }
+                
+                return Pawn::canMoveToTile(dFile, dRank, true);
+            }
+            
+            // Diagonal captures
+            if (std::abs(dFile) == 1 && dRank == 1) {
+                // Check if destination has an enemy piece
+                if (board.isTileEmpty(to) || board.getPieceColor(to) == Color::WHITE) {
+                    return false;
+                }
+                
+                return Pawn::canMoveToTile(dFile, dRank, true);
+            }
+            
+            return false;
         }
-
-        // Knight logic
-        if (board.getWhiteKnights() & fromMask) {
-            return Knight::canMoveToTile(dFile, dRank);
-        }
-
-        // Bishop logic
-        if (board.getWhiteBishops() & fromMask) {
-            // TODO: Add additional logic (need to check if path is clear)
-            return Bishop::canMoveToTile(dFile, dRank);
-        }
-
-        // Rook logic
-        if (board.getWhiteRooks() & fromMask) {
-            // TODO: Add additional logic (need to check if path is clear)
-            return Rook::canMoveToTile(dFile, dRank);
-        }
-
-        // Queen logic
-        if (board.getWhiteQueens() & fromMask) {
-            return Queen::canMoveToTile(dFile, dRank);
-        }
-
-        // King logic
     } else {
-
+        // Black piece logic
+        if (pieceType == Type::PAWN) {
+            // Forward moves (single or double step)
+            if (dFile == 0 && dRank < 0) {
+                // Check if destination is empty
+                if (!board.isTileEmpty(to)) {
+                    return false;
+                }
+                
+                // For double step, also check if the tile in between is empty
+                if (dRank == -2 && !board.isTileEmpty(from - 8)) {
+                    return false;
+                }
+                
+                return Pawn::canMoveToTile(dFile, dRank, false);
+            }
+            
+            // Diagonal captures
+            if (std::abs(dFile) == 1 && dRank == -1) {
+                // Check if destination has an enemy piece
+                if (board.isTileEmpty(to) || board.getPieceColor(to) == Color::BLACK) {
+                    return false;
+                }
+                
+                return Pawn::canMoveToTile(dFile, dRank, false);
+            }
+            
+            return false;
+        }
     }
 
+    // Knight logic
+    if (pieceType == Type::KNIGHT) {
+        return Knight::canMoveToTile(dFile, dRank);
+    }
+
+    // Bishop logic
+    if (pieceType == Type::BISHOP) {
+        return Bishop::canMoveToTile(dFile, dRank) && isPathClear(board, fromFile, fromRank, toFile, toRank);
+    }
+
+    // Rook logic
+    if (pieceType == Type::ROOK) {
+        return Rook::canMoveToTile(dFile, dRank) && isPathClear(board, fromFile, fromRank, toFile, toRank);
+    }
+
+    // Queen logic
+    if (pieceType == Type::QUEEN) {
+        return Queen::canMoveToTile(dFile, dRank) && isPathClear(board, fromFile, fromRank, toFile, toRank);
+    }
+
+    // King logic
     return true;
 }
 

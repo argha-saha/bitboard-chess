@@ -58,6 +58,7 @@ public:
     [[nodiscard]] U64 getBlackQueens() const;
     [[nodiscard]] U64 getBlackKing() const;
     [[nodiscard]] Color getTurn() const;
+    [[nodiscard]] Type getPieceType(int tile) const;
 
     // Setters
     void setWhitePawns(U64 value);
@@ -72,6 +73,7 @@ public:
     void setBlackRooks(U64 value);
     void setBlackQueens(U64 value);
     void setBlackKing(U64 value);
+    void setTurn(Color color);
     void clearPiece(int tile);
     void clearBoard();
 

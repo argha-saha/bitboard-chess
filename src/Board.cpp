@@ -130,6 +130,23 @@ Color Board::getTurn() const {
     return turn;
 }
 
+Type Board::getPieceType(int tile) const {
+    U64 mask = (1ULL << tile);
+    if (whitePawns & mask) return Type::PAWN;
+    if (whiteKnights & mask) return Type::KNIGHT;
+    if (whiteBishops & mask) return Type::BISHOP;
+    if (whiteRooks & mask) return Type::ROOK;
+    if (whiteQueens & mask) return Type::QUEEN;
+    if (whiteKing & mask) return Type::KING;
+    if (blackPawns & mask) return Type::PAWN;
+    if (blackKnights & mask) return Type::KNIGHT;
+    if (blackBishops & mask) return Type::BISHOP;
+    if (blackRooks & mask) return Type::ROOK;
+    if (blackQueens & mask) return Type::QUEEN;
+    if (blackKing & mask) return Type::KING;
+    return Type::NONE;
+}
+
 void Board::setWhitePawns(U64 value) {
     whitePawns = value;
 }
@@ -175,6 +192,10 @@ void Board::setBlackQueens(U64 value) {
 
 void Board::setBlackKing(U64 value) {
     blackKing = value;
+}
+
+void Board::setTurn(Color color) {
+    turn = color;
 }
 
 void Board::clearPiece(int tile) {
