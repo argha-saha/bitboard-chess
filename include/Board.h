@@ -57,6 +57,7 @@ public:
     [[nodiscard]] U64 getBlackRooks() const;
     [[nodiscard]] U64 getBlackQueens() const;
     [[nodiscard]] U64 getBlackKing() const;
+    [[nodiscard]] Color getTurn() const;
 
     // Static methods
     static int getFile(int tile);

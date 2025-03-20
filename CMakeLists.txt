@@ -8,12 +8,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Source files
 set(SOURCES
-    src/main.cpp
-    src/Application.cpp
-    src/Game.cpp
-    src/Board.cpp
+        src/main.cpp
+        src/Application.cpp
+        src/Game.cpp
+        src/Board.cpp
         src/Move.cpp
-        include/Move.h
+        src/Validator.cpp
 )
 
 # Find SDL3

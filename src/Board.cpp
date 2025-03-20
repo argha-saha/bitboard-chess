@@ -59,9 +59,9 @@ bool Board::isTileEmpty(int tile) const {
 
 Color Board::getPieceColor(int tile) const {
     U64 mask = (1ULL << tile);
-    if (isWhite(tile)) return WHITE;
-    if (isBlack(tile)) return BLACK;
-    return EMPTY;
+    if (isWhite(tile)) return Color::WHITE;
+    if (isBlack(tile)) return Color::BLACK;
+    return Color::EMPTY;
 }
 
 bool Board::isWhite(int tile) const {
@@ -132,6 +132,10 @@ int Board::getFile(int tile) {
 
 int Board::getRank(int tile) {
     return tile / 8;
+}
+
+Color Board::getTurn() const {
+    return turn;
 }
 
 std::string Board::indexToTile(int index) {
