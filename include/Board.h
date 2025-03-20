@@ -73,6 +73,7 @@ public:
     void setBlackQueens(U64 value);
     void setBlackKing(U64 value);
     void clearPiece(int tile);
+    void clearBoard();
 
     // Static methods
     static int getFile(int tile);

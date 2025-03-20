@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Board.h"
 #include "Move.h"
+#include "Validator.h"
 #include <cassert>
 #include <iostream>
 
@@ -140,6 +141,51 @@ void testPieceSettingAndClearing() {
     std::cout << std::endl;
 }
 
+void testIsPathClear() {
+    Board board;
+
+    for (int i = 0; i < 64; i++) {
+        board.clearPiece(i);
+    }
+    
+    // Test diagonal path (empty)
+    assert(Validator::isPathClear(board, 0, 0, 7, 7) == true);
+    std::cout << "PASS: isPathClear() - empty diagonal path\n";
+    
+    // Test diagonal path (blocked)
+    board.setWhitePawns(1ULL << 27);  // Set pawn at d4
+    assert(Validator::isPathClear(board, 0, 0, 7, 7) == false);
+    std::cout << "PASS: isPathClear() - blocked diagonal path\n";
+    
+    // Test horizontal path (empty)
+    board.clearPiece(27);  // Clear the blocking pawn
+    assert(Validator::isPathClear(board, 0, 0, 7, 0) == true);
+    std::cout << "PASS: isPathClear() - empty horizontal path\n";
+    
+    // Test horizontal path (blocked)
+    board.setWhitePawns(1ULL << 5);  // Set pawn at f1
+    assert(Validator::isPathClear(board, 0, 0, 7, 0) == false);
+    std::cout << "PASS: isPathClear() - blocked horizontal path\n";
+    
+    // Test vertical path (empty)
+    board.clearPiece(5);  // Clear the blocking pawn
+    assert(Validator::isPathClear(board, 0, 0, 0, 7) == true);
+    std::cout << "PASS: isPathClear() - empty vertical path\n";
+    
+    // Test vertical path (blocked)
+    board.setWhitePawns(1ULL << 32);  // Set pawn at a5
+    assert(Validator::isPathClear(board, 0, 0, 0, 7) == false);
+    std::cout << "PASS: isPathClear() - blocked vertical path\n";
+    
+    // Test path with piece at destination (should be clear)
+    board.clearPiece(32);  // Clear the blocking pawn
+    board.setBlackRooks(1ULL << 63);  // Set black rook at h8
+    assert(Validator::isPathClear(board, 0, 0, 7, 7) == true);
+    std::cout << "PASS: isPathClear() - path with piece at destination\n";
+    
+    std::cout << std::endl;
+}
+
 int main() {
     std::cout << "Running Tests...\n\n";
     
@@ -149,6 +195,7 @@ int main() {
     testMoveString();
     testPrintBoard();
     testPieceSettingAndClearing();
+    testIsPathClear();
     
     std::cout << "All tests passed successfully!\n";
 

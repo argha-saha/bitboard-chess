@@ -126,45 +126,8 @@ U64 Board::getBlackKing() const {
     return blackKing;
 }
 
-int Board::getFile(int tile) {
-    return tile % 8;
-}
-
-int Board::getRank(int tile) {
-    return tile / 8;
-}
-
 Color Board::getTurn() const {
     return turn;
-}
-
-std::string Board::indexToTile(int index) {
-    int file = getFile(index);
-    int rank = getRank(index);
-
-    std::string res;
-    res.push_back(char('a' + file));
-    res.push_back(char('1' + rank));
-
-    return res;
-}
-
-int Board::tileToIndex(const std::string& tile) {
-    if (tile.size() != 2) {
-        return -1;
-    }
-
-    char file = static_cast<char>(std::tolower(static_cast<unsigned char>(tile[0])));
-    char rank = tile[1];
-
-    if (file < 'a' || file > 'h' || rank < '1' || rank > '8') {
-        return -1;
-    }
-
-    int f = file - 'a';
-    int r = rank - '1';
-
-    return r * 8 + f;
 }
 
 void Board::setWhitePawns(U64 value) {
@@ -228,4 +191,56 @@ void Board::clearPiece(int tile) {
     blackRooks &= mask;
     blackQueens &= mask;
     blackKing &= mask;
+}
+
+void Board::clearBoard() {
+    whitePawns = 0ULL;
+    whiteKnights = 0ULL;
+    whiteBishops = 0ULL;
+    whiteRooks = 0ULL;
+    whiteQueens = 0ULL;
+    whiteKing = 0ULL;
+    blackPawns = 0ULL;
+    blackKnights = 0ULL;
+    blackBishops = 0ULL;
+    blackRooks = 0ULL;
+    blackQueens = 0ULL;
+    blackKing = 0ULL;
+}
+
+int Board::getFile(int tile) {
+    return tile % 8;
+}
+
+int Board::getRank(int tile) {
+    return tile / 8;
+}
+
+std::string Board::indexToTile(int index) {
+    int file = getFile(index);
+    int rank = getRank(index);
+
+    std::string res;
+    res.push_back(char('a' + file));
+    res.push_back(char('1' + rank));
+
+    return res;
+}
+
+int Board::tileToIndex(const std::string& tile) {
+    if (tile.size() != 2) {
+        return -1;
+    }
+
+    char file = static_cast<char>(std::tolower(static_cast<unsigned char>(tile[0])));
+    char rank = tile[1];
+
+    if (file < 'a' || file > 'h' || rank < '1' || rank > '8') {
+        return -1;
+    }
+
+    int f = file - 'a';
+    int r = rank - '1';
+
+    return r * 8 + f;
 }
