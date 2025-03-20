@@ -186,6 +186,120 @@ void testIsPathClear() {
     std::cout << std::endl;
 }
 
+void pawnMovementTest() {
+    Board board;
+    board.clearBoard();
+    
+    // Test white pawn movement
+    // Set up a white pawn at e2 (index 12)
+    board.setWhitePawns(1ULL << 12);
+    
+    // Test single step forward (e2 -> e3)
+    assert(Validator::isValidMove(board, Move(12, 20, '\0')));
+    
+    // Test double step forward (e2 -> e4)
+    assert(Validator::isValidMove(board, Move(12, 28, '\0')));
+    
+    // Test blocked single step
+    board.setBlackPawns(1ULL << 20);  // Block e3
+    assert(!Validator::isValidMove(board, Move(12, 20, '\0')));
+    
+    // Test blocked double step
+    board.setBlackPawns(1ULL << 28);  // Block e4
+    assert(!Validator::isValidMove(board, Move(12, 28, '\0')));
+    
+    // Test diagonal capture (e2 -> f3 capture)
+    board.setBlackPawns(1ULL << 21);  // Place black pawn at f3
+    assert(Validator::isValidMove(board, Move(12, 21, '\0')));
+    
+    // Test invalid diagonal move (no piece to capture)
+    board.clearPiece(21);  // Remove black pawn
+    assert(!Validator::isValidMove(board, Move(12, 21, '\0')));
+    
+    // Test invalid diagonal move (own piece)
+    board.setWhitePawns(1ULL << 21);  // Place white pawn at f3
+    assert(!Validator::isValidMove(board, Move(12, 21, '\0')));
+    
+    // Test black pawn movement
+    board.clearBoard();
+    board.setBlackPawns(1ULL << 52);  // Place black pawn at e7
+    board.setTurn(Color::BLACK);
+    
+    // Test single step forward (e7 -> e6)
+    assert(Validator::isValidMove(board, Move(52, 44, '\0')));
+    
+    // Test double step forward (e7 -> e5)
+    assert(Validator::isValidMove(board, Move(52, 36, '\0')));
+    
+    // Test blocked single step
+    board.setWhitePawns(1ULL << 44);  // Block e6
+    assert(!Validator::isValidMove(board, Move(52, 44, '\0')));
+    
+    // Test blocked double step
+    board.setWhitePawns(1ULL << 36);  // Block e5
+    assert(!Validator::isValidMove(board, Move(52, 36, '\0')));
+    
+    // Test diagonal capture (e7 -> f6 capture)
+    board.setWhitePawns(1ULL << 45);  // Place white pawn at f6
+    assert(Validator::isValidMove(board, Move(52, 45, '\0')));
+    
+    // Test invalid diagonal move (no piece to capture)
+    board.clearPiece(45);  // Remove white pawn
+    assert(!Validator::isValidMove(board, Move(52, 45, '\0')));
+    
+    // Test invalid diagonal move (own piece)
+    board.setBlackPawns(1ULL << 45);  // Place black pawn at f6
+    assert(!Validator::isValidMove(board, Move(52, 45, '\0')));
+    
+    std::cout << "Pawn movement tests passed!" << std::endl;
+}
+
+void knightMovementTest() {
+    Board board;
+    board.clearBoard();
+    
+    // Test white knight movement
+    board.setWhiteKnights(1ULL << 1);  // Place white knight at b1
+    board.setTurn(Color::WHITE);
+    
+    // Test valid L-shaped moves
+    assert(Validator::isValidMove(board, Move(1, 16, '\0')));  // b1 -> a3
+    assert(Validator::isValidMove(board, Move(1, 18, '\0')));  // b1 -> c3
+    assert(Validator::isValidMove(board, Move(1, 11, '\0')));  // b1 -> d2
+    
+    // Test invalid moves
+    assert(!Validator::isValidMove(board, Move(1, 9, '\0')));   // b1 -> b2 (not L-shaped)
+    assert(!Validator::isValidMove(board, Move(1, 10, '\0')));  // b1 -> c2 (not L-shaped)
+    
+    // Test jumping over pieces
+    board.setWhitePawns(1ULL << 8);   // Place white pawn at a2
+    board.setWhitePawns(1ULL << 10);  // Place white pawn at c2
+    assert(Validator::isValidMove(board, Move(1, 16, '\0')));
+    assert(Validator::isValidMove(board, Move(1, 18, '\0')));
+    
+    // Test black knight movement
+    board.clearBoard();
+    board.setBlackKnights(1ULL << 57);  // Place black knight at b8
+    board.setTurn(Color::BLACK);
+    
+    // Test valid L-shaped moves
+    assert(Validator::isValidMove(board, Move(57, 40, '\0')));  // b8 -> a6
+    assert(Validator::isValidMove(board, Move(57, 42, '\0')));  // b8 -> c6
+    assert(Validator::isValidMove(board, Move(57, 51, '\0')));  // b8 -> d7
+    
+    // Test invalid moves
+    assert(!Validator::isValidMove(board, Move(57, 49, '\0')));  // b8 -> b7 (not L-shaped)
+    assert(!Validator::isValidMove(board, Move(57, 50, '\0')));  // b8 -> c7 (not L-shaped)
+    
+    // Test jumping over pieces
+    board.setBlackPawns(1ULL << 48);  // Place black pawn at a7
+    board.setBlackPawns(1ULL << 50);  // Place black pawn at c7
+    assert(Validator::isValidMove(board, Move(57, 40, '\0')));
+    assert(Validator::isValidMove(board, Move(57, 42, '\0')));
+    
+    std::cout << "Knight movement tests passed!" << std::endl;
+}
+
 int main() {
     std::cout << "Running Tests...\n\n";
     
@@ -196,6 +310,9 @@ int main() {
     testPrintBoard();
     testPieceSettingAndClearing();
     testIsPathClear();
+    pawnMovementTest();
+    knightMovementTest();
+    // kingMovementTest();
     
     std::cout << "All tests passed successfully!\n";
 
