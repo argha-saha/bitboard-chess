@@ -3,6 +3,7 @@
 
 #include "Board.h"
 #include "Move.h"
+#include "Knight.h"
 
 class Validator {
 public:

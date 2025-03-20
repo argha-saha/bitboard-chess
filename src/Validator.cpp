@@ -44,6 +44,9 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
         }
 
         // Knight logic
+        if (board.getWhiteKnights() & fromMask) {
+            return Knight::canMoveToTile(dFile, dRank);
+        }
 
         // Bishop logic
 

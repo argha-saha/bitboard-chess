@@ -14,7 +14,12 @@ set(SOURCES
         src/Board.cpp
         src/Move.cpp
         src/Validator.cpp
+        src/Pawn.cpp
         src/Knight.cpp
+        src/Bishop.cpp
+        src/Rook.cpp
+        src/Queen.cpp
+        src/King.cpp
 )
 
 # Find SDL3
