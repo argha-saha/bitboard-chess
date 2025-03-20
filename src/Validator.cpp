@@ -124,7 +124,62 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
     }
 
     // King logic
-    return true;
+    if (pieceType == Type::KING) {
+        // Check for castling
+        if (dRank == 0 && std::abs(dFile) == 2) {
+            // Castling conditions:
+            // 1. King hasn't moved
+            // 2. Appropriate rook hasn't moved
+            // 3. No pieces between king and rook
+            // 4. King is not in check
+            // 5. King doesn't pass through check
+
+            bool isKingside = (dFile == 2);  // Moving towards h-file
+            int rookFile = isKingside ? 7 : 0;
+            int rookRank = whiteTurn ? 0 : 7;
+            int rookFrom = rookRank * 8 + rookFile;
+
+            // Check if king and rook have moved
+            if (whiteTurn) {
+                if (board.hasWhiteKingMoved()) return false;
+                if (isKingside && board.hasWhiteKingSideRookMoved()) return false;
+                if (!isKingside && board.hasWhiteQueenSideRookMoved()) return false;
+            } else {
+                if (board.hasBlackKingMoved()) return false;
+                if (isKingside && board.hasBlackKingSideRookMoved()) return false;
+                if (!isKingside && board.hasBlackQueenSideRookMoved()) return false;
+            }
+
+            // Check if rook is present
+            if (whiteTurn && !(board.getWhiteRooks() & (1ULL << rookFrom))) return false;
+            if (!whiteTurn && !(board.getBlackRooks() & (1ULL << rookFrom))) return false;
+
+            // Check if path is clear
+            if (!isPathClear(board, fromFile, fromRank, rookFile, rookRank)) return false;
+
+            // Check if king is in check
+            if (isUnderThreat(board, from, !whiteTurn)) return false;
+
+            // Check if king passes through check
+            int throughSquare = from + (isKingside ? 1 : -1);
+            if (isUnderThreat(board, throughSquare, !whiteTurn)) return false;
+
+            // Check if destination square is under attack
+            if (isUnderThreat(board, to, !whiteTurn)) return false;
+
+            return true;
+        }
+
+        // Normal king move
+        if (!King::canMoveToTile(dFile, dRank)) return false;
+
+        // Ensure destination square is not under attack
+        if (isUnderThreat(board, to, !whiteTurn)) return false;
+
+        return true;
+    }
+
+    return false;
 }
 
 bool Validator::isPathClear(
@@ -167,55 +222,5 @@ bool Validator::isPathClear(
 }
 
 bool Validator::isUnderThreat(const Board& board, int tile, bool byWhite) {
-    int file = Board::getFile(tile);
-    int rank = Board::getRank(tile);
-
-    // Pawn
-    if (byWhite) {
-        // Up-left attack
-        if (file > 0) {
-            int attackTile = tile - 9;
-
-            if (attackTile >= 0 && Board::getRank(attackTile) == rank - 1) {
-                if (board.getWhitePawns() & (1ULL << attackTile)) {
-                    return true;
-                }
-            }
-        }
-
-        // Up-right attack
-        if (file < 7) {
-            int attackTile = tile - 7;
-
-            if (attackTile >= 0 && Board::getRank(attackTile) == rank - 1) {
-                if (board.getWhitePawns() & (1ULL << attackTile)) {
-                    return true;
-                }
-            }
-        }
-    } else {
-        // Down-left attack
-        if (file > 0) {
-            int attackTile = tile + 7;
-
-            if (attackTile < 64 && Board::getRank(attackTile) == rank + 1) {
-                if (board.getWhitePawns() & (1ULL << attackTile)) {
-                    return true;
-                }
-            }
-        }
-
-        // Down-right attack
-        if (file < 7) {
-            int attackTile = tile + 9;
-
-            if (attackTile < 64 && Board::getRank(attackTile) == rank + 1) {
-                if (board.getWhitePawns() & (1ULL << attackTile)) {
-                    return true;
-                }
-            }
-        }
-    }
-
-    return false;
+    
 }

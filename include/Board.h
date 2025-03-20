@@ -60,6 +60,14 @@ public:
     [[nodiscard]] Color getTurn() const;
     [[nodiscard]] Type getPieceType(int tile) const;
 
+    // Castling getters
+    [[nodiscard]] bool hasWhiteKingMoved() const;
+    [[nodiscard]] bool hasWhiteKingSideRookMoved() const;
+    [[nodiscard]] bool hasWhiteQueenSideRookMoved() const;
+    [[nodiscard]] bool hasBlackKingMoved() const;
+    [[nodiscard]] bool hasBlackKingSideRookMoved() const;
+    [[nodiscard]] bool hasBlackQueenSideRookMoved() const;
+
     // Setters
     void setWhitePawns(U64 value);
     void setWhiteKnights(U64 value);

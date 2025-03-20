@@ -147,6 +147,30 @@ Type Board::getPieceType(int tile) const {
     return Type::NONE;
 }
 
+bool Board::hasWhiteKingMoved() const {
+    return whiteKingMoved;
+}
+
+bool Board::hasWhiteKingSideRookMoved() const {
+    return whiteKingSideRookMoved;
+}
+
+bool Board::hasWhiteQueenSideRookMoved() const {
+    return whiteQueenSideRookMoved;
+}
+
+bool Board::hasBlackKingMoved() const {
+    return blackKingMoved;
+}
+
+bool Board::hasBlackKingSideRookMoved() const {
+    return blackKingSideRookMoved;
+}
+
+bool Board::hasBlackQueenSideRookMoved() const {
+    return blackQueenSideRookMoved;
+}
+
 void Board::setWhitePawns(U64 value) {
     whitePawns = value;
 }
