@@ -61,3 +61,42 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
 
     return true;
 }
+
+bool Validator::isPathClear(
+    const Board& board,
+    int fromFile, int fromRank,
+    int toFile, int toRank
+) {
+    int dFile = 0;
+    int dRank = 0;
+
+    // Determine direction
+    if (toFile > fromFile) {
+        dFile = 1;
+    } else if (toFile < fromFile) {
+        dFile = -1;
+    }
+
+    if (toRank > fromRank) {
+        dRank = 1;
+    } else if (toRank < fromRank) {
+        dRank = -1;
+    }
+
+    int currentFile = fromFile + dFile;
+    int currentRank = fromRank + dRank;
+
+    // Path
+    while (currentFile != toFile || currentRank != toRank) {
+        int index = currentRank * 8 + currentFile;
+
+        if (!board.isTileEmpty(index)) {
+            return false;
+        }
+
+        currentFile += dFile;
+        currentRank += dRank;
+    }
+
+    return true;
+}

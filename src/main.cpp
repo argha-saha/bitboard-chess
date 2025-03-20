@@ -44,6 +44,7 @@ void moveStringTest() {
 
 int main(int argc, char *argv[])
 {
+//    // GUI
 //    Application app;
 //
 //    if (!app.init()) {
@@ -52,6 +53,7 @@ int main(int argc, char *argv[])
 //
 //    app.run();
 
+    // Tests
     printBoardTest();
     boardFileRankTests();
     boardIndexToTileTest();
