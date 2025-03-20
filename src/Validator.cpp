@@ -40,7 +40,8 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
     if (whiteTurn) {
         // Pawn logic
         if (board.getWhitePawns() & fromMask) {
-            // TODO: Call canMoveToTile() and add additional logic
+            // TODO: Add additional logic
+            return Pawn::canMoveToTile(dFile, dRank);
         }
 
         // Knight logic
@@ -49,10 +50,21 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
         }
 
         // Bishop logic
+        if (board.getWhiteBishops() & fromMask) {
+            // TODO: Add additional logic (need to check if path is clear)
+            return Bishop::canMoveToTile(dFile, dRank);
+        }
 
         // Rook logic
+        if (board.getWhiteRooks() & fromMask) {
+            // TODO: Add additional logic (need to check if path is clear)
+            return Rook::canMoveToTile(dFile, dRank);
+        }
 
         // Queen logic
+        if (board.getWhiteQueens() & fromMask) {
+            return Queen::canMoveToTile(dFile, dRank);
+        }
 
         // King logic
     } else {
@@ -99,4 +111,58 @@ bool Validator::isPathClear(
     }
 
     return true;
+}
+
+bool Validator::isUnderThreat(const Board& board, int tile, bool byWhite) {
+    int file = Board::getFile(tile);
+    int rank = Board::getRank(tile);
+
+    // Pawn
+    if (byWhite) {
+        // Up-left attack
+        if (file > 0) {
+            int attackTile = tile - 9;
+
+            if (attackTile >= 0 && Board::getRank(attackTile) == rank - 1) {
+                if (board.getWhitePawns() & (1ULL << attackTile)) {
+                    return true;
+                }
+            }
+        }
+
+        // Up-right attack
+        if (file < 7) {
+            int attackTile = tile - 7;
+
+            if (attackTile >= 0 && Board::getRank(attackTile) == rank - 1) {
+                if (board.getWhitePawns() & (1ULL << attackTile)) {
+                    return true;
+                }
+            }
+        }
+    } else {
+        // Down-left attack
+        if (file > 0) {
+            int attackTile = tile + 7;
+
+            if (attackTile < 64 && Board::getRank(attackTile) == rank + 1) {
+                if (board.getWhitePawns() & (1ULL << attackTile)) {
+                    return true;
+                }
+            }
+        }
+
+        // Down-right attack
+        if (file < 7) {
+            int attackTile = tile + 9;
+
+            if (attackTile < 64 && Board::getRank(attackTile) == rank + 1) {
+                if (board.getWhitePawns() & (1ULL << attackTile)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
