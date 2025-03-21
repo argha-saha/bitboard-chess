@@ -342,9 +342,11 @@ void Board::movePiece(int fromTile, int toTile) {
                     if (toTile == 6) {  // g1 (kingside castle)
                         // Move the rook from h1 to f1
                         whiteRooks = (whiteRooks & ~(1ULL << 7)) | (1ULL << 5);
+                        whiteKingSideRookMoved = true;
                     } else if (toTile == 2) {  // c1 (queenside castle)
                         // Move the rook from a1 to d1
                         whiteRooks = (whiteRooks & ~(1ULL << 0)) | (1ULL << 3);
+                        whiteQueenSideRookMoved = true;
                     }
                 }
 
@@ -387,9 +389,11 @@ void Board::movePiece(int fromTile, int toTile) {
                     if (toTile == 62) {  // g8 (kingside castle)
                         // Move the rook from h8 to f8
                         blackRooks = (blackRooks & ~(1ULL << 63)) | (1ULL << 61);
+                        blackKingSideRookMoved = true;
                     } else if (toTile == 58) {  // c8 (queenside castle)
                         // Move the rook from a8 to d8
                         blackRooks = (blackRooks & ~(1ULL << 56)) | (1ULL << 59);
+                        blackQueenSideRookMoved = true;
                     }
                 }
 
