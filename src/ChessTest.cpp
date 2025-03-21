@@ -79,11 +79,11 @@ void testPieceSettingAndClearing() {
     assert(board.getWhiteKing() == (1ULL << 5));
     std::cout << "PASS: setWhiteKing()\n";
 
-    board.setWhitePawns(1ULL << 6); // Set pawn at g1
+    board.setWhitePawns(1ULL << 6);  // Set pawn at g1
     assert(board.getWhitePawns() == (1ULL << 6));
     std::cout << "PASS: setWhitePawns()\n";
 
-    board.setWhiteKnights(1ULL << 7); // Set knight at h1
+    board.setWhiteKnights(1ULL << 7);  // Set knight at h1
     assert(board.getWhiteKnights() == (1ULL << 7));
     std::cout << "PASS: setWhiteKnights()\n";
     
@@ -112,11 +112,11 @@ void testPieceSettingAndClearing() {
     assert(board.getBlackKing() == (1ULL << 61));
     std::cout << "PASS: setBlackKing()\n";
 
-    board.setBlackPawns(1ULL << 62); // Set pawn at g8
+    board.setBlackPawns(1ULL << 62);  // Set pawn at g8
     assert(board.getBlackPawns() == (1ULL << 62));
     std::cout << "PASS: setBlackPawns()\n";
 
-    board.setBlackKnights(1ULL << 63); // Set knight at h8
+    board.setBlackKnights(1ULL << 63);  // Set knight at h8
     assert(board.getBlackKnights() == (1ULL << 63));
     std::cout << "PASS: setBlackKnights()\n";
     
@@ -503,6 +503,67 @@ void movePieceTest() {
     assert(board.hasWhiteKingMoved());
     assert(board.hasWhiteKingSideRookMoved());
     std::cout << "PASS: White kingside castling\n";
+    
+    // Test white queenside castling
+    board.clearBoard();
+    board.setWhiteKing(1ULL << 4);    // White king at e1
+    board.setWhiteRooks(1ULL << 0);   // White rook at a1
+    board.setTurn(Color::WHITE);
+    board.movePiece(4, 2);        // Castle queenside
+    assert(board.getWhiteKing() == (1ULL << 2));   // King should be on c1
+    assert(board.getWhiteRooks() == (1ULL << 3));  // Rook should be on d1
+    assert(board.hasWhiteKingMoved());
+    assert(board.hasWhiteQueenSideRookMoved());
+    std::cout << "PASS: White queenside castling\n";
+    
+    // Test black kingside castling
+    board.clearBoard();
+    board.setBlackKing(1ULL << 60);    // Black king at e8
+    board.setBlackRooks(1ULL << 63);   // Black rook at h8
+    board.setTurn(Color::BLACK);
+    board.movePiece(60, 62);       // Castle kingside
+    assert(board.getBlackKing() == (1ULL << 62));   // King should be on g8
+    assert(board.getBlackRooks() == (1ULL << 61));  // Rook should be on f8
+    assert(board.hasBlackKingMoved());
+    assert(board.hasBlackKingSideRookMoved());
+    std::cout << "PASS: Black kingside castling\n";
+    
+    // Test black queenside castling
+    board.clearBoard();
+    board.setBlackKing(1ULL << 60);    // Black king at e8
+    board.setBlackRooks(1ULL << 56);   // Black rook at a8
+    board.setTurn(Color::BLACK);
+    board.movePiece(60, 58);       // Castle queenside
+    assert(board.getBlackKing() == (1ULL << 58));   // King should be on c8
+    assert(board.getBlackRooks() == (1ULL << 59));  // Rook should be on d8
+    assert(board.hasBlackKingMoved());
+    assert(board.hasBlackQueenSideRookMoved());
+    std::cout << "PASS: Black queenside castling\n";
+    
+    // Test rook movement and castling flag updates
+    board.clearBoard();
+    board.setWhiteRooks(1ULL << 0);  // White rook at a1
+    board.setTurn(Color::WHITE);
+    board.movePiece(0, 8);  // Move rook to a2
+    assert(board.hasWhiteQueenSideRookMoved());
+    assert(board.getWhiteRooks() == (1ULL << 8));
+    std::cout << "PASS: Rook movement and castling flag update\n";
+    
+    // Ensure moving a piece doesn't move other pieces
+    board.clearBoard();
+    board.setWhitePawns(1ULL << 0);    // a1
+    board.setWhiteKnights(1ULL << 1);  // b1
+    board.setWhiteBishops(1ULL << 2);  // c1
+    board.setWhiteQueens(1ULL << 3);   // d1
+    board.setWhiteKing(1ULL << 4);     // e1
+    board.setTurn(Color::WHITE);
+    
+    board.movePiece(3, 11);  // Move queen to d2
+    assert(board.getWhitePawns() == (1ULL << 0));
+    assert(board.getWhiteKnights() == (1ULL << 1));
+    assert(board.getWhiteBishops() == (1ULL << 2));
+    assert(board.getWhiteQueens() == (1ULL << 11));
+    assert(board.getWhiteKing() == (1ULL << 4));
     
     std::cout << "All movePiece tests passed!" << std::endl << std::endl;
 }
