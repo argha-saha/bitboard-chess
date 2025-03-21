@@ -458,17 +458,53 @@ void threatDetectionTest() {
     // Test multiple threats
     board.clearBoard();
     board.setWhiteQueens(1ULL << 28);  // White queen at d4
-    board.setWhiteKnights(1ULL << 21); // White knight at e3
+    board.setWhiteKnights(1ULL << 21);  // White knight at e3
     assert(Validator::isUnderThreat(board, 36, true));  // e5 is threatened by both pieces
     
     // Test through check
     board.clearBoard();
-    board.setBlackRooks(1ULL << 28); // Black rook at d4
-    board.setBlackPawns(1ULL << 29); // Black pawn at e4
-    assert(Validator::isUnderThreat(board, 20, false)); // d3 is threatened
-    assert(!Validator::isUnderThreat(board, 31, false)); // g4 is not threatened (blocked)
+    board.setBlackRooks(1ULL << 28);  // Black rook at d4
+    board.setBlackPawns(1ULL << 29);  // Black pawn at e4
+    assert(Validator::isUnderThreat(board, 20, false));  // d3 is threatened
+    assert(!Validator::isUnderThreat(board, 31, false));  // g4 is not threatened (blocked)
     
     std::cout << "Threat detection tests passed!" << std::endl;
+}
+
+void movePieceTest() {
+    Board board;
+    board.clearBoard();
+    
+    // Test regular piece movement
+    board.setWhitePawns(1ULL << 12);  // White pawn at e2
+    board.movePiece(12, 20);  // Move to e3
+    assert((board.getWhitePawns() & (1ULL << 12)) == 0);
+    assert(board.getWhitePawns() == (1ULL << 20));
+    assert(board.getTurn() == Color::BLACK);
+    std::cout << "PASS: Basic pawn movement and turn switch\n";
+    
+    // Test capture
+    board.setBlackPawns(1ULL << 29);  // Black pawn at f4
+    board.setTurn(Color::WHITE);
+    board.movePiece(20, 29);  // Capture at f4
+    assert(board.getWhitePawns() == (1ULL << 29));
+    assert(board.getBlackPawns() == 0);  // Black pawn should be captured
+    assert(board.getTurn() == Color::BLACK);
+    std::cout << "PASS: Capture and piece removal\n";
+    
+    // Test white kingside castling
+    board.clearBoard();
+    board.setWhiteKing(1ULL << 4);   // White king at e1
+    board.setWhiteRooks(1ULL << 7);  // White rook at h1
+    board.setTurn(Color::WHITE);
+    board.movePiece(4, 6);        // Castle kingside
+    assert(board.getWhiteKing() == (1ULL << 6));   // King should be on g1
+    assert(board.getWhiteRooks() == (1ULL << 5));  // Rook should be on f1
+    assert(board.hasWhiteKingMoved());
+    assert(board.hasWhiteKingSideRookMoved());
+    std::cout << "PASS: White kingside castling\n";
+    
+    std::cout << "All movePiece tests passed!" << std::endl << std::endl;
 }
 
 int main() {
@@ -485,6 +521,7 @@ int main() {
     knightMovementTest();
     kingMovementTest();
     threatDetectionTest();
+    movePieceTest();
     
     std::cout << "All tests passed successfully!\n";
 
