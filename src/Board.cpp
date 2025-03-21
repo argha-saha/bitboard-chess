@@ -289,3 +289,69 @@ int Board::tileToIndex(const std::string& tile) {
 
     return r * 8 + f;
 }
+
+void Board::movePiece(int fromTile, int toTile) {
+    Type pieceType = getPieceType(fromTile);
+    Color pieceColor = getPieceColor(fromTile);
+    
+    // Clear the destination tile first
+    clearPiece(toTile);
+    
+    // Create masks for the move
+    U64 fromMask = ~(1ULL << fromTile);
+    U64 toMask = 1ULL << toTile;
+    
+    // Move the piece based on its type and color
+    if (pieceColor == Color::WHITE) {
+        switch (pieceType) {
+            case Type::PAWN:
+                whitePawns = (whitePawns & fromMask) | toMask;
+                break;
+            case Type::KNIGHT:
+                whiteKnights = (whiteKnights & fromMask) | toMask;
+                break;
+            case Type::BISHOP:
+                whiteBishops = (whiteBishops & fromMask) | toMask;
+                break;
+            case Type::ROOK:
+                whiteRooks = (whiteRooks & fromMask) | toMask;
+                break;
+            case Type::QUEEN:
+                whiteQueens = (whiteQueens & fromMask) | toMask;
+                break;
+            case Type::KING:
+                whiteKing = (whiteKing & fromMask) | toMask;
+                whiteKingMoved = true;
+                break;
+            default:
+                break;
+        }
+    } else {
+        switch (pieceType) {
+            case Type::PAWN:
+                blackPawns = (blackPawns & fromMask) | toMask;
+                break;
+            case Type::KNIGHT:
+                blackKnights = (blackKnights & fromMask) | toMask;
+                break;
+            case Type::BISHOP:
+                blackBishops = (blackBishops & fromMask) | toMask;
+                break;
+            case Type::ROOK:
+                blackRooks = (blackRooks & fromMask) | toMask;
+                break;
+            case Type::QUEEN:
+                blackQueens = (blackQueens & fromMask) | toMask;
+                break;
+            case Type::KING:
+                blackKing = (blackKing & fromMask) | toMask;
+                blackKingMoved = true;
+                break;
+            default:
+                break;
+        }
+    }
+    
+    // Switch turns
+    turn = (turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
+}
