@@ -82,12 +82,12 @@ public:
     void setBlackQueens(U64 value);
     void setBlackKing(U64 value);
     void setTurn(Color color);
+
+    void switchTurn();
     void clearPiece(int tile);
     void clearBoard();
-
     void movePiece(int fromTile, int toTile);
 
-    // Static methods
     static int getFile(int tile);
     static int getRank(int tile);
 

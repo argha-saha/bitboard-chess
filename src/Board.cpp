@@ -222,6 +222,10 @@ void Board::setTurn(Color color) {
     turn = color;
 }
 
+void Board::switchTurn() {
+    turn = (turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
+}
+
 void Board::clearPiece(int tile) {
     U64 mask = ~(1ULL << tile);
     whitePawns &= mask;
@@ -315,6 +319,16 @@ void Board::movePiece(int fromTile, int toTile) {
                 break;
             case Type::ROOK:
                 whiteRooks = (whiteRooks & fromMask) | toMask;
+                
+                // Update castling flags
+                if (fromTile == 0) {
+                    whiteQueenSideRookMoved = true; // a1
+                }
+
+                if (fromTile == 7) {
+                    whiteKingSideRookMoved = true; // h1
+                }
+
                 break;
             case Type::QUEEN:
                 whiteQueens = (whiteQueens & fromMask) | toMask;
@@ -322,6 +336,18 @@ void Board::movePiece(int fromTile, int toTile) {
             case Type::KING:
                 whiteKing = (whiteKing & fromMask) | toMask;
                 whiteKingMoved = true;
+                
+                // Handle castling
+                if (fromTile == 4) {    // e1
+                    if (toTile == 6) {  // g1 (kingside castle)
+                        // Move the rook from h1 to f1
+                        whiteRooks = (whiteRooks & ~(1ULL << 7)) | (1ULL << 5);
+                    } else if (toTile == 2) {  // c1 (queenside castle)
+                        // Move the rook from a1 to d1
+                        whiteRooks = (whiteRooks & ~(1ULL << 0)) | (1ULL << 3);
+                    }
+                }
+
                 break;
             default:
                 break;
@@ -339,6 +365,15 @@ void Board::movePiece(int fromTile, int toTile) {
                 break;
             case Type::ROOK:
                 blackRooks = (blackRooks & fromMask) | toMask;
+
+                // Update castling flags
+                if (fromTile == 56) {
+                    blackQueenSideRookMoved = true; // a8
+                }
+                if (fromTile == 63) {
+                    blackKingSideRookMoved = true; // h8
+                }
+
                 break;
             case Type::QUEEN:
                 blackQueens = (blackQueens & fromMask) | toMask;
@@ -346,6 +381,18 @@ void Board::movePiece(int fromTile, int toTile) {
             case Type::KING:
                 blackKing = (blackKing & fromMask) | toMask;
                 blackKingMoved = true;
+                
+                // Handle castling
+                if (fromTile == 60) {    // e8
+                    if (toTile == 62) {  // g8 (kingside castle)
+                        // Move the rook from h8 to f8
+                        blackRooks = (blackRooks & ~(1ULL << 63)) | (1ULL << 61);
+                    } else if (toTile == 58) {  // c8 (queenside castle)
+                        // Move the rook from a8 to d8
+                        blackRooks = (blackRooks & ~(1ULL << 56)) | (1ULL << 59);
+                    }
+                }
+
                 break;
             default:
                 break;
@@ -353,5 +400,5 @@ void Board::movePiece(int fromTile, int toTile) {
     }
     
     // Switch turns
-    turn = (turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
+    switchTurn();
 }
