@@ -300,6 +300,70 @@ void knightMovementTest() {
     std::cout << "Knight movement tests passed!" << std::endl;
 }
 
+void kingMovementTest() {
+    Board board;
+    board.clearBoard();
+    
+    // Test white king movement
+    board.setWhiteKing(1ULL << 4);  // Place white king at e1
+    board.setTurn(Color::WHITE);
+    
+    // Test normal moves
+    assert(Validator::isValidMove(board, Move(4, 3, '\0')));   // e1 -> d1
+    assert(Validator::isValidMove(board, Move(4, 5, '\0')));   // e1 -> f1
+    assert(Validator::isValidMove(board, Move(4, 11, '\0')));  // e1 -> d2
+    assert(Validator::isValidMove(board, Move(4, 12, '\0')));  // e1 -> e2
+    assert(Validator::isValidMove(board, Move(4, 13, '\0')));  // e1 -> f2
+    
+    // Test invalid moves (more than one square)
+    assert(!Validator::isValidMove(board, Move(4, 2, '\0')));   // e1 -> c1
+    assert(!Validator::isValidMove(board, Move(4, 20, '\0')));  // e1 -> e3
+    
+    // Test kingside castling
+    board.setWhiteRooks(1ULL << 7);  // Place white rook at h1
+    assert(Validator::isValidMove(board, Move(4, 6, '\0')));   // e1 -> g1 (castling)
+    
+    // Test queenside castling
+    board.setWhiteRooks(1ULL << 0);  // Place white rook at a1
+    assert(Validator::isValidMove(board, Move(4, 2, '\0')));   // e1 -> c1 (castling)
+    
+    // Test castling with pieces in between
+    board.setWhiteKnights(1ULL << 1);  // Place white knight at b1
+    assert(!Validator::isValidMove(board, Move(4, 2, '\0')));  // Queenside castling should fail
+    
+    board.setWhiteBishops(1ULL << 5);  // Place white bishop at f1
+    assert(!Validator::isValidMove(board, Move(4, 6, '\0')));  // Kingside castling should fail
+    
+    // Test black king movement
+    board.clearBoard();
+    board.setBlackKing(1ULL << 60);  // Place black king at e8
+    board.setTurn(Color::BLACK);
+    
+    // Test normal moves
+    assert(Validator::isValidMove(board, Move(60, 59, '\0')));  // e8 -> d8
+    assert(Validator::isValidMove(board, Move(60, 61, '\0')));  // e8 -> f8
+    assert(Validator::isValidMove(board, Move(60, 51, '\0')));  // e8 -> d7
+    assert(Validator::isValidMove(board, Move(60, 52, '\0')));  // e8 -> e7
+    assert(Validator::isValidMove(board, Move(60, 53, '\0')));  // e8 -> f7
+    
+    // Test kingside castling
+    board.setBlackRooks(1ULL << 63);  // Place black rook at h8
+    assert(Validator::isValidMove(board, Move(60, 62, '\0')));  // e8 -> g8 (castling)
+    
+    // Test queenside castling
+    board.setBlackRooks(1ULL << 56);  // Place black rook at a8
+    assert(Validator::isValidMove(board, Move(60, 58, '\0')));  // e8 -> c8 (castling)
+    
+    // Test castling with pieces in between
+    board.setBlackKnights(1ULL << 57);  // Place black knight at b8
+    assert(!Validator::isValidMove(board, Move(60, 58, '\0')));  // Queenside castling should fail
+    
+    board.setBlackBishops(1ULL << 61);  // Place black bishop at f8
+    assert(!Validator::isValidMove(board, Move(60, 62, '\0')));  // Kingside castling should fail
+    
+    std::cout << "King movement tests passed!" << std::endl;
+}
+
 int main() {
     std::cout << "Running Tests...\n\n";
     
@@ -312,9 +376,9 @@ int main() {
     testIsPathClear();
     pawnMovementTest();
     knightMovementTest();
-    // kingMovementTest();
+    kingMovementTest();
     
     std::cout << "All tests passed successfully!\n";
 
     return 0;
-} 
+}
