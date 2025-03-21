@@ -222,5 +222,127 @@ bool Validator::isPathClear(
 }
 
 bool Validator::isUnderThreat(const Board& board, int tile, bool byWhite) {
+    int targetFile = Board::getFile(tile);
+    int targetRank = Board::getRank(tile);
     
+    // Check for pawn threats
+    // White pawns attack upward, black pawns attack downward
+    int pawnRankOffset = byWhite ? -1 : 1;
+    
+    for (int fileOffset : {-1, 1}) {
+        int attackFile = targetFile + fileOffset;
+        int attackRank = targetRank + pawnRankOffset;
+        
+        if (attackFile >= 0 && attackFile < 8 && attackRank >= 0 && attackRank < 8) {
+            int attackTile = attackRank * 8 + attackFile;
+            U64 pawnMask = 1ULL << attackTile;
+
+            if (byWhite) {
+                if (board.getWhitePawns() & pawnMask) {
+                    return true;
+                }
+            } else {
+                if (board.getBlackPawns() & pawnMask) {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    // Check for knight threats
+    const int knightOffsets[8][2] = {
+        {-2, -1}, {-2, 1}, {-1, -2}, {-1, 2},
+        {1, -2}, {1, 2}, {2, -1}, {2, 1}
+    };
+    
+    for (const auto& offset : knightOffsets) {
+        int attackFile = targetFile + offset[0];
+        int attackRank = targetRank + offset[1];
+        
+        if (attackFile >= 0 && attackFile < 8 && attackRank >= 0 && attackRank < 8) {
+            int attackTile = attackRank * 8 + attackFile;
+            U64 knightMask = 1ULL << attackTile;
+
+            if (byWhite) {
+                if (board.getWhiteKnights() & knightMask) {
+                    return true;
+                }
+            } else {
+                if (board.getBlackKnights() & knightMask) {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    // Check for king threats
+    const int kingOffsets[8][2] = {
+        {-1, -1}, {-1, 0}, {-1, 1}, {0, -1},
+        {0, 1}, {1, -1}, {1, 0}, {1, 1}
+    };
+    
+    for (const auto& offset : kingOffsets) {
+        int attackFile = targetFile + offset[0];
+        int attackRank = targetRank + offset[1];
+        
+        if (attackFile >= 0 && attackFile < 8 && attackRank >= 0 && attackRank < 8) {
+            int attackTile = attackRank * 8 + attackFile;
+            U64 kingMask = 1ULL << attackTile;
+
+            if (byWhite) {
+                if (board.getWhiteKing() & kingMask) {
+                    return true;
+                }
+            } else {
+                if (board.getBlackKing() & kingMask) {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    // Check for sliding piece threats
+    // Used for queen, rook, bishop
+    const int directions[8][2] = {
+        {-1, -1}, {-1, 0}, {-1, 1}, {0, -1},
+        {0, 1}, {1, -1}, {1, 0}, {1, 1}
+    };
+    
+    for (const auto& dir : directions) {
+        int attackFile = targetFile + dir[0];
+        int attackRank = targetRank + dir[1];
+        
+        while (attackFile >= 0 && attackFile < 8 && attackRank >= 0 && attackRank < 8) {
+            int attackTile = attackRank * 8 + attackFile;
+            U64 attackMask = 1ULL << attackTile;
+            
+            // If we hit any piece, check if it's a threatening piece
+            if (!board.isTileEmpty(attackTile)) {
+                bool isStraight = dir[0] == 0 || dir[1] == 0;
+                bool isDiagonal = dir[0] != 0 && dir[1] != 0;
+                
+                if (byWhite) {
+                    if ((board.getWhiteQueens() & attackMask) ||
+                        (isStraight && (board.getWhiteRooks() & attackMask)) ||
+                        (isDiagonal && (board.getWhiteBishops() & attackMask))) {
+                        return true;
+                    }
+                } else {
+                    if ((board.getBlackQueens() & attackMask) ||
+                        (isStraight && (board.getBlackRooks() & attackMask)) ||
+                        (isDiagonal && (board.getBlackBishops() & attackMask))) {
+                        return true;
+                    }
+                }
+
+                // Stop checking this direction if we hit any piece
+                break;
+            }
+            
+            attackFile += dir[0];
+            attackRank += dir[1];
+        }
+    }
+    
+    return false;
 }

@@ -364,6 +364,113 @@ void kingMovementTest() {
     std::cout << "King movement tests passed!" << std::endl;
 }
 
+void threatDetectionTest() {
+    Board board;
+    board.clearBoard();
+    
+    // Test white pawn threats
+    board.setWhitePawns(1ULL << 35);  // White pawn at d5
+    assert(Validator::isUnderThreat(board, 42, true));  // e6 is threatened
+    assert(Validator::isUnderThreat(board, 44, true));  // c6 is threatened
+    assert(!Validator::isUnderThreat(board, 43, true)); // d6 is not threatened
+    assert(!Validator::isUnderThreat(board, 27, true)); // d4 is not threatened
+    
+    board.clearBoard();
+
+    // Test black pawn threats
+    board.setBlackPawns(1ULL << 27); // Black pawn at d4
+    assert(Validator::isUnderThreat(board, 18, false));  // e3 is threatened
+    assert(Validator::isUnderThreat(board, 20, false));  // c3 is threatened
+    assert(!Validator::isUnderThreat(board, 19, false)); // d3 is not threatened
+    assert(!Validator::isUnderThreat(board, 35, false)); // d5 is not threatened
+    
+    board.clearBoard();
+
+    // Test knight threats
+    board.setWhiteKnights(1ULL << 28); // White knight at e4
+    assert(Validator::isUnderThreat(board, 43, true));  // d6 is threatened
+    assert(Validator::isUnderThreat(board, 45, true));  // f6 is threatened
+    assert(Validator::isUnderThreat(board, 34, true));  // c5 is threatened
+    assert(Validator::isUnderThreat(board, 38, true));  // g5 is threatened
+    assert(!Validator::isUnderThreat(board, 36, true)); // e5 is not threatened
+    
+    board.clearBoard();
+
+    // Test bishop threats
+    board.setBlackBishops(1ULL << 28); // Black bishop at e4
+    assert(Validator::isUnderThreat(board, 35, false));  // d5 is threatened
+    assert(Validator::isUnderThreat(board, 37, false));  // f5 is threatened
+    assert(Validator::isUnderThreat(board, 19, false));  // d3 is threatened
+    assert(Validator::isUnderThreat(board, 21, false));  // f3 is threatened
+    assert(!Validator::isUnderThreat(board, 29, false)); // f4 is not threatened
+    
+    // Test blocked bishop
+    board.setWhitePawns(1ULL << 35); // White pawn at d5
+    assert(!Validator::isUnderThreat(board, 42, false)); // c6 is not threatened (blocked)
+    
+    board.clearBoard();
+
+    // Test rook threats
+    board.setWhiteRooks(1ULL << 28); // White rook at e4
+    assert(Validator::isUnderThreat(board, 36, true));  // e5 is threatened
+    assert(Validator::isUnderThreat(board, 27, true));  // d4 is threatened
+    assert(Validator::isUnderThreat(board, 29, true));  // f4 is threatened
+    assert(Validator::isUnderThreat(board, 20, true));  // e3 is threatened
+    assert(Validator::isUnderThreat(board, 60, true));  // e7 is threatened
+    assert(!Validator::isUnderThreat(board, 37, true)); // f5 is not threatened
+    
+    // Test blocked rook
+    board.setBlackPawns(1ULL << 29); // Black pawn at f4
+    assert(!Validator::isUnderThreat(board, 31, true)); // h4 is not threatened (blocked)
+    
+    board.clearBoard();
+
+    // Test queen threats
+    board.setBlackQueens(1ULL << 28); // Black queen at e4
+    assert(Validator::isUnderThreat(board, 27, false)); // d4 is threatened (horizontal)
+    assert(Validator::isUnderThreat(board, 29, false)); // f4 is threatened (horizontal)
+    assert(Validator::isUnderThreat(board, 31, false)); // g4 is threatened (horizontal)
+    assert(Validator::isUnderThreat(board, 35, false)); // d5 is threatened (diagonal)
+    assert(Validator::isUnderThreat(board, 36, false)); // e5 is threatened (vertical)
+    assert(Validator::isUnderThreat(board, 37, false)); // f5 is threatened (diagonal)
+    assert(Validator::isUnderThreat(board, 19, false)); // d3 is threatened (diagonal)
+    assert(Validator::isUnderThreat(board, 20, false)); // e3 is threatened (vertical)
+    assert(Validator::isUnderThreat(board, 21, false)); // f3 is threatened (diagonal)
+    
+    // Test blocked queen
+    board.setWhitePawns(1ULL << 29); // White pawn at f4
+    assert(!Validator::isUnderThreat(board, 31, false)); // h4 is not threatened (blocked)
+    
+    board.clearBoard();
+
+    // Test king threats
+    board.setWhiteKing(1ULL << 28); // White king at e4
+    assert(Validator::isUnderThreat(board, 27, true));  // d4 is threatened
+    assert(Validator::isUnderThreat(board, 29, true));  // f4 is threatened
+    assert(Validator::isUnderThreat(board, 35, true));  // d5 is threatened
+    assert(Validator::isUnderThreat(board, 36, true));  // e5 is threatened
+    assert(Validator::isUnderThreat(board, 37, true));  // f5 is threatened
+    assert(Validator::isUnderThreat(board, 19, true));  // d3 is threatened
+    assert(Validator::isUnderThreat(board, 20, true));  // e3 is threatened
+    assert(Validator::isUnderThreat(board, 21, true));  // f3 is threatened
+    assert(!Validator::isUnderThreat(board, 44, true)); // e6 is not threatened (too far)
+    
+    // Test multiple threats
+    board.clearBoard();
+    board.setWhiteQueens(1ULL << 28);  // White queen at d4
+    board.setWhiteKnights(1ULL << 21); // White knight at e3
+    assert(Validator::isUnderThreat(board, 36, true));  // e5 is threatened by both pieces
+    
+    // Test through check
+    board.clearBoard();
+    board.setBlackRooks(1ULL << 28); // Black rook at d4
+    board.setBlackPawns(1ULL << 29); // Black pawn at e4
+    assert(Validator::isUnderThreat(board, 20, false)); // d3 is threatened
+    assert(!Validator::isUnderThreat(board, 31, false)); // g4 is not threatened (blocked)
+    
+    std::cout << "Threat detection tests passed!" << std::endl;
+}
+
 int main() {
     std::cout << "Running Tests...\n\n";
     
@@ -377,6 +484,7 @@ int main() {
     pawnMovementTest();
     knightMovementTest();
     kingMovementTest();
+    threatDetectionTest();
     
     std::cout << "All tests passed successfully!\n";
 
