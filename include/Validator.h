@@ -18,6 +18,8 @@ public:
     static bool isPathClear(const Board& board, int fromFile, int fromRank, int toFile, int toRank);
     static bool isUnderThreat(const Board& board, int tile, bool byWhite);
     static bool isInCheck(const Board& board, bool whiteKing);
+    static bool hasLegalMoves(const Board& board, bool whiteTurn);
+    static bool isCheckmate(const Board& board, bool whiteTurn);
 };
 
 #endif // CHESS_VALIDATOR_H

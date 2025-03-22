@@ -352,8 +352,47 @@ bool Validator::isInCheck(const Board& board, bool whiteKing) {
     U64 kingBitboard = whiteKing ? board.getWhiteKing() : board.getBlackKing();
 
     // Get the position of the least significant 1 bit
+    // Prevent undefined behavior for ctzll if kingBitboard is 0
+    if (kingBitboard == 0) {
+        return false;
+    }
+
     int kingTile = __builtin_ctzll(kingBitboard);
     
     // Check if the king's position is under threat by enemy pieces
     return isUnderThreat(board, kingTile, !whiteKing);
+}
+
+bool Validator::hasLegalMoves(const Board &board, bool forWhite) {
+    // Collect all pieces for the given color
+    U64 pieces = board.getOccupancy(forWhite);
+    Board tempBoard;
+
+    while (pieces) {
+        int fromTile = __builtin_ctzll(pieces);
+
+        // Clear the least significant bit
+        pieces &= pieces - 1;
+
+        for (int toTile = 0; toTile < 64; ++toTile) {
+            // TODO: Might need to adjust this to work for all promotions
+            Move move(fromTile, toTile, '\0');
+            
+            if (isValidMove(board, move)) {
+                tempBoard = board;
+                tempBoard.movePiece(fromTile, toTile);
+
+                if (!isInCheck(tempBoard, forWhite)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+bool Validator::isCheckmate(const Board &board, bool whiteKing) {
+    // Checkmate occurs when the king is in check and there are no legal moves available
+    return isInCheck(board, whiteKing) && !hasLegalMoves(board, whiteKing);
 }
