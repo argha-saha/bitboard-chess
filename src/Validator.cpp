@@ -346,3 +346,14 @@ bool Validator::isUnderThreat(const Board& board, int tile, bool byWhite) {
     
     return false;
 }
+
+bool Validator::isInCheck(const Board& board, bool whiteKing) {
+    // Find the king's position
+    U64 kingBitboard = whiteKing ? board.getWhiteKing() : board.getBlackKing();
+
+    // Get the position of the least significant 1 bit
+    int kingTile = __builtin_ctzll(kingBitboard);
+    
+    // Check if the king's position is under threat by enemy pieces
+    return isUnderThreat(board, kingTile, !whiteKing);
+}

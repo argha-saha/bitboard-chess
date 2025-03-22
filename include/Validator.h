@@ -17,6 +17,7 @@ public:
     static bool isValidMove(const Board& board, const Move& move);
     static bool isPathClear(const Board& board, int fromFile, int fromRank, int toFile, int toRank);
     static bool isUnderThreat(const Board& board, int tile, bool byWhite);
+    static bool isInCheck(const Board& board, bool whiteKing);
 };
 
 #endif // CHESS_VALIDATOR_H

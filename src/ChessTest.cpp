@@ -568,6 +568,47 @@ void movePieceTest() {
     std::cout << "All movePiece tests passed!" << std::endl << std::endl;
 }
 
+void checkDetectionTest() {
+    Board board;
+    board.clearBoard();
+    
+    // Test white king in check
+    board.setWhiteKing(1ULL << 4);    // White king at e1
+    board.setBlackRooks(1ULL << 12);  // Black rook at e2
+    assert(Validator::isInCheck(board, true));  // White king should be in check
+    std::cout << "PASS: White king in check from rook\n";
+    
+    // Test white king not in check
+    board.setBlackRooks(1ULL << 13);  // Move rook to f2
+    // std::bitset<64> x(board.getBlackRooks());
+    // std::cout << x << std::endl;
+    assert(!Validator::isInCheck(board, true));  // White king should not be in check
+    std::cout << "PASS: White king not in check\n";
+    
+    board.clearBoard();
+
+    // Test black king in check
+    board.setBlackKing(1ULL << 60);  // Black king at e8
+    board.setWhiteRooks(1ULL << 52);  // White rook at e7
+    assert(Validator::isInCheck(board, false));  // Black king should be in check
+    std::cout << "PASS: Black king in check from rook\n";
+    
+    // Test black king not in check
+    board.setWhiteRooks(1ULL << 53);   // Move rook to f7
+    assert(!Validator::isInCheck(board, false));  // Black king should not be in check
+    std::cout << "PASS: Black king not in check\n";
+    
+    // Test check from multiple pieces
+    board.clearBoard();
+    board.setWhiteKing(1ULL << 4);     // White king at e1
+    board.setBlackRooks(1ULL << 12);   // Black rook at e2
+    board.setBlackQueens(1ULL << 13);  // Black queen at f2
+    assert(Validator::isInCheck(board, true));  // White king should be in check
+    std::cout << "PASS: King in check from multiple pieces\n";
+    
+    std::cout << "Check detection tests passed!" << std::endl << std::endl;
+}
+
 int main() {
     std::cout << "Running Tests...\n\n";
     
@@ -583,6 +624,7 @@ int main() {
     kingMovementTest();
     threatDetectionTest();
     movePieceTest();
+    checkDetectionTest();
     
     std::cout << "All tests passed successfully!\n";
 
