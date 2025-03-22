@@ -39,6 +39,7 @@ public:
     Board();
     void initBoard();
     [[nodiscard]] U64 getOccupancy() const;
+    [[nodiscard]] U64 getOccupancy(bool white) const;
     [[nodiscard]] bool isTileEmpty(int tile) const;
     [[nodiscard]] Color getPieceColor(int tile) const;
     [[nodiscard]] bool isWhite(int tile) const;
