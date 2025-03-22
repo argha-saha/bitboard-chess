@@ -17,7 +17,8 @@ enum Type {
     BISHOP,
     ROOK,
     QUEEN,
-    KING
+    KING,
+    NONE
 };
 
 #endif // CHESS_H

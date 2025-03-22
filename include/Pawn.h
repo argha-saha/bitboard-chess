@@ -5,7 +5,8 @@
 
 class Pawn {
 public:
-    static bool canMoveToTile(int dFile, int dRank);
+    static bool canMoveToTile(int dFile, int dRank, bool isWhite);
 };
 
 #endif // CHESS_PAWN_H
+

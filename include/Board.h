@@ -39,6 +39,7 @@ public:
     Board();
     void initBoard();
     [[nodiscard]] U64 getOccupancy() const;
+    [[nodiscard]] U64 getOccupancy(bool white) const;
     [[nodiscard]] bool isTileEmpty(int tile) const;
     [[nodiscard]] Color getPieceColor(int tile) const;
     [[nodiscard]] bool isWhite(int tile) const;
@@ -58,6 +59,15 @@ public:
     [[nodiscard]] U64 getBlackQueens() const;
     [[nodiscard]] U64 getBlackKing() const;
     [[nodiscard]] Color getTurn() const;
+    [[nodiscard]] Type getPieceType(int tile) const;
+
+    // Castling getters
+    [[nodiscard]] bool hasWhiteKingMoved() const;
+    [[nodiscard]] bool hasWhiteKingSideRookMoved() const;
+    [[nodiscard]] bool hasWhiteQueenSideRookMoved() const;
+    [[nodiscard]] bool hasBlackKingMoved() const;
+    [[nodiscard]] bool hasBlackKingSideRookMoved() const;
+    [[nodiscard]] bool hasBlackQueenSideRookMoved() const;
 
     // Setters
     void setWhitePawns(U64 value);
@@ -72,10 +82,13 @@ public:
     void setBlackRooks(U64 value);
     void setBlackQueens(U64 value);
     void setBlackKing(U64 value);
+    void setTurn(Color color);
+
+    void switchTurn();
     void clearPiece(int tile);
     void clearBoard();
+    void movePiece(int fromTile, int toTile);
 
-    // Static methods
     static int getFile(int tile);
     static int getRank(int tile);
 
