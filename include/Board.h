@@ -33,7 +33,7 @@ private:
     // TODO: Add en passant logic
 
     // Turn
-    Color turn;
+    Color turn = Color::WHITE;
 
 public:
     Board();

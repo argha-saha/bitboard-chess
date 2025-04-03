@@ -52,7 +52,7 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
                 }
                 
                 // For double step, also check if the tile in between is empty
-                if (dRank == 2 && !board.isTileEmpty(from + 8)) {
+                if (dRank == 2 && (!board.isTileEmpty(from + 8) || fromRank != 1)) {
                     return false;
                 }
                 
@@ -82,7 +82,7 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
                 }
                 
                 // For double step, also check if the tile in between is empty
-                if (dRank == -2 && !board.isTileEmpty(from - 8)) {
+                if (dRank == -2 && (!board.isTileEmpty(from - 8) || fromRank != 6)) {
                     return false;
                 }
                 

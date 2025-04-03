@@ -215,7 +215,11 @@ void Board::setTurn(Color color) {
 }
 
 void Board::switchTurn() {
-    turn = (turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
+    if (turn == Color::WHITE) {
+        turn = Color::BLACK;
+    } else {
+        turn = Color::WHITE;
+    }
 }
 
 void Board::clearPiece(int tile) {

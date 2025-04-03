@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <iostream>
 
 Game::Game() = default;
 
@@ -36,4 +37,66 @@ void Game::printBoard() const {
     }
 
     std::cout << "  a b c d e f g h\n\n";
+}
+
+void Game::play() {
+    exitGame = false;
+
+    while (!exitGame) {
+        board.initBoard();
+        activeGame = true;
+
+        Validator validator;
+
+        while (activeGame) {
+            printBoard();
+            Color turn = board.getTurn();
+            
+            if (turn == Color::WHITE) {
+                std::cout << "White to move: ";
+            } else {
+                std::cout << "Black to move: ";
+            }
+
+            std::string input;
+            std::getline(std::cin, input);
+
+            if (input == "quit") {
+                activeGame = false;
+                exitGame = true;
+            }
+
+            Move move = Move::moveString(input);
+
+            if (move.getFromTile() == -1) {
+                std::cout << "Invalid move" << std::endl;
+                continue;
+            }
+
+            int fromTile = move.getFromTile();
+            int toTile = move.getToTile();
+
+            if (!validator.isCheckmate(board, turn)) {
+                printBoard();
+            }
+
+            if (validator.isValidMove(board, move)) {
+                // Check if the move is valid and if it is, update the game/board state
+                board.movePiece(fromTile, toTile);
+            } else {
+                std::cout << "Invalid move!" << std::endl;
+            }
+        }
+
+        // Restart logic
+        if (!exitGame) {
+            std::cout << "Restart? (y/n): ";
+            std::string response;
+            std::getline(std::cin, response);
+
+            if (response != "y" && response != "Y") {
+                exitGame = true;
+            }
+        }
+    }
 }

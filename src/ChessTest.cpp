@@ -609,6 +609,29 @@ void checkDetectionTest() {
     std::cout << "Check detection tests passed!" << std::endl << std::endl;
 }
 
+void kingTakeKingTest() {
+    Board board;
+    board.clearBoard();
+
+    board.setWhiteKing(1ULL << 4); // e1
+    board.setBlackKing(1ULL << 20); // e3
+
+    // Black king should not be able to move to e2
+    assert(!Validator::isValidMove(board, Move(20, 12, '\0'))); // e3 -> e2
+}
+
+void pawnMovesTest() {
+    Board board;
+    board.clearBoard();
+
+    board.setWhitePawns(1ULL << 12); // e2
+    assert(Validator::isValidMove(board, Move(12, 28, '\0'))); // e2 -> e4
+    board.movePiece(12, 28);
+
+    // Make sure pawn can't double move again
+    assert(!Validator::isValidMove(board, Move(28, 44, '\0'))); // e4 -> e6
+}
+
 int main() {
     std::cout << "Running Tests...\n\n";
     
@@ -625,6 +648,8 @@ int main() {
     threatDetectionTest();
     movePieceTest();
     checkDetectionTest();
+    kingTakeKingTest();
+    pawnMovesTest();
     
     std::cout << "All tests passed successfully!\n";
 

@@ -1,13 +1,19 @@
 #include "Application.h"
+#include "Game.h"
 
 int main(int argc, char *argv[]) {
-    Application app;
+    // GUI game
+    // Application app;
     
-    if (!app.init()) {
-        return 1;
-    }
+    // if (!app.init()) {
+    //     return 1;
+    // }
     
-    app.run();
+    // app.run();
+
+    // CLI game
+    Game game;
+    game.play();
     
     return 0;
 }
