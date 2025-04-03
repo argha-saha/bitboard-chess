@@ -613,11 +613,11 @@ void kingTakeKingTest() {
     Board board;
     board.clearBoard();
 
-    board.setWhiteKing(1ULL << 4); // e1
+    board.setWhiteKing(1ULL << 4);  // e1
     board.setBlackKing(1ULL << 20); // e3
 
     // Black king should not be able to move to e2
-    assert(!Validator::isValidMove(board, Move(20, 12, '\0'))); // e3 -> e2
+    assert(!Validator::isValidMove(board, Move(20, 12, '\0')));  // e3 -> e2
 }
 
 void pawnMovesTest() {
@@ -625,11 +625,64 @@ void pawnMovesTest() {
     board.clearBoard();
 
     board.setWhitePawns(1ULL << 12); // e2
-    assert(Validator::isValidMove(board, Move(12, 28, '\0'))); // e2 -> e4
+    assert(Validator::isValidMove(board, Move(12, 28, '\0')));  // e2 -> e4
     board.movePiece(12, 28);
 
     // Make sure pawn can't double move again
-    assert(!Validator::isValidMove(board, Move(28, 44, '\0'))); // e4 -> e6
+    assert(!Validator::isValidMove(board, Move(28, 44, '\0')));  // e4 -> e6
+}
+
+void foolsMateTest() {
+    Board board;
+
+    board.movePiece(f2, f3);
+    board.movePiece(e7, e5);
+    board.movePiece(g2, g4);
+    board.movePiece(d8, h4);
+
+    // Game::printBoard(board);
+
+    bool turn = board.getTurn() == Color::WHITE;
+
+    assert(Validator::isInCheck(board, turn));
+    assert(Validator::isCheckmate(board, turn));
+    assert(!Validator::isStalemate(board, turn));
+}
+
+void shortestStalemateTest() {
+    Board board;
+    
+    board.movePiece(e2, e3);  // e3
+    board.movePiece(a7, a5);  // a5
+
+    board.movePiece(d1, h5);  // Qh5
+    board.movePiece(a8, a6);  // Ra6
+
+    board.movePiece(h5, a5);  // Qxa5
+    board.movePiece(h7, h5);  // h5
+
+    board.movePiece(a5, c7);  // Qxc7
+    board.movePiece(a6, h6);  // Rah6
+
+    board.movePiece(h2, h4);  // h4
+    board.movePiece(f7, f6);  // f6
+
+    board.movePiece(c7, d7);  // Qxd7+
+    board.movePiece(e8, f7);  // Kf7
+
+    board.movePiece(d7, b7);  // Qxb7
+    board.movePiece(d8, d3);  // Qd3
+
+    board.movePiece(b7, b8);  // Qxb8
+    board.movePiece(d3, h7);  // Qh7
+
+    board.movePiece(b8, c8);  // Qxc8
+    board.movePiece(f7, g6);  // Kg6
+
+    board.movePiece(c8, e6);  // Qe6
+    assert(Validator::isStalemate(board, board.getTurn() == Color::WHITE));
+
+    // Game::printBoard(board);
 }
 
 int main() {
@@ -650,6 +703,8 @@ int main() {
     checkDetectionTest();
     kingTakeKingTest();
     pawnMovesTest();
+    foolsMateTest();
+    shortestStalemateTest();
     
     std::cout << "All tests passed successfully!\n";
 

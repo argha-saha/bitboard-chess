@@ -39,6 +39,22 @@ void Game::printBoard() const {
     std::cout << "  a b c d e f g h\n\n";
 }
 
+// Main for testing in ChessTest.cpp
+void Game::printBoard(const Board& b) {
+    for (int rank = 7; rank >= 0; --rank) {
+        std::cout << (rank + 1) << " ";
+
+        for (int file = 0; file < 8; ++file) {
+            int tile = rank * 8 + file;
+            std::cout << b.getPieceChar(tile) << " ";
+        }
+
+        std::cout << "\n";
+    }
+
+    std::cout << "  a b c d e f g h\n\n";
+}
+
 void Game::play() {
     exitGame = false;
     bool turn;
