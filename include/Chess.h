@@ -5,13 +5,13 @@
 
 using U64 = std::uint64_t;
 
-enum Color {
+enum class Color {
     WHITE,
     BLACK,
     EMPTY
 };
 
-enum Type {
+enum class Type {
     PAWN,
     KNIGHT,
     BISHOP,
