@@ -49,6 +49,17 @@ void Game::play() {
         Validator validator;
 
         while (activeGame) {
+            // Check for check or checkmate
+            if (validator.isInCheck(board, board.getTurn() == Color::WHITE)) {
+                std::cout << "Check!" << std::endl;
+            }
+
+            if (validator.isCheckmate(board, board.getTurn() == Color::WHITE)) {
+                std::cout << "Checkmate!" << std::endl;
+                activeGame = false;
+                break;
+            }
+
             printBoard();
             Color turn = board.getTurn();
             
@@ -76,12 +87,7 @@ void Game::play() {
             int fromTile = move.getFromTile();
             int toTile = move.getToTile();
 
-            if (!validator.isCheckmate(board, turn)) {
-                printBoard();
-            }
-
             if (validator.isValidMove(board, move)) {
-                // Check if the move is valid and if it is, update the game/board state
                 board.movePiece(fromTile, toTile);
             } else {
                 std::cout << "Invalid move!" << std::endl;
