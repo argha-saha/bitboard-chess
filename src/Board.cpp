@@ -24,6 +24,7 @@ void Board::initBoard() {
     blackKingSideRookMoved = false;
     blackQueenSideRookMoved = false;
     turn = Color::WHITE;
+    turnCount = 0;
 }
 
 U64 Board::getOccupancy() const {
@@ -124,18 +125,18 @@ Color Board::getTurn() const {
 
 Type Board::getPieceType(int tile) const {
     U64 mask = (1ULL << tile);
-    if (whitePawns & mask) return Type::PAWN;
+    if (whitePawns & mask)   return Type::PAWN;
     if (whiteKnights & mask) return Type::KNIGHT;
     if (whiteBishops & mask) return Type::BISHOP;
-    if (whiteRooks & mask) return Type::ROOK;
-    if (whiteQueens & mask) return Type::QUEEN;
-    if (whiteKing & mask) return Type::KING;
-    if (blackPawns & mask) return Type::PAWN;
+    if (whiteRooks & mask)   return Type::ROOK;
+    if (whiteQueens & mask)  return Type::QUEEN;
+    if (whiteKing & mask)    return Type::KING;
+    if (blackPawns & mask)   return Type::PAWN;
     if (blackKnights & mask) return Type::KNIGHT;
     if (blackBishops & mask) return Type::BISHOP;
-    if (blackRooks & mask) return Type::ROOK;
-    if (blackQueens & mask) return Type::QUEEN;
-    if (blackKing & mask) return Type::KING;
+    if (blackRooks & mask)   return Type::ROOK;
+    if (blackQueens & mask)  return Type::QUEEN;
+    if (blackKing & mask)    return Type::KING;
     return Type::NONE;
 }
 
@@ -215,7 +216,11 @@ void Board::setTurn(Color color) {
 }
 
 void Board::switchTurn() {
-    turn = (turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
+    if (turn == Color::WHITE) {
+        turn = Color::BLACK;
+    } else {
+        turn = Color::WHITE;
+    }
 }
 
 void Board::clearPiece(int tile) {
@@ -313,12 +318,12 @@ void Board::movePiece(int fromTile, int toTile) {
                 whiteRooks = (whiteRooks & fromMask) | toMask;
                 
                 // Update castling flags
-                if (fromTile == 0) {
-                    whiteQueenSideRookMoved = true; // a1
+                if (fromTile == a1) {
+                    whiteQueenSideRookMoved = true;
                 }
 
-                if (fromTile == 7) {
-                    whiteKingSideRookMoved = true; // h1
+                if (fromTile == h1) {
+                    whiteKingSideRookMoved = true;
                 }
 
                 break;
@@ -330,14 +335,14 @@ void Board::movePiece(int fromTile, int toTile) {
                 whiteKingMoved = true;
                 
                 // Handle castling
-                if (fromTile == 4) {    // e1
-                    if (toTile == 6) {  // g1 (kingside castle)
+                if (fromTile == e1) {
+                    if (toTile == g1) {  // Kingside castle
                         // Move the rook from h1 to f1
-                        whiteRooks = (whiteRooks & ~(1ULL << 7)) | (1ULL << 5);
+                        whiteRooks = (whiteRooks & ~(1ULL << h1)) | (1ULL << f1);
                         whiteKingSideRookMoved = true;
-                    } else if (toTile == 2) {  // c1 (queenside castle)
+                    } else if (toTile == c1) {  // Queenside castle
                         // Move the rook from a1 to d1
-                        whiteRooks = (whiteRooks & ~(1ULL << 0)) | (1ULL << 3);
+                        whiteRooks = (whiteRooks & ~(1ULL << a1)) | (1ULL << d1);
                         whiteQueenSideRookMoved = true;
                     }
                 }
@@ -361,11 +366,11 @@ void Board::movePiece(int fromTile, int toTile) {
                 blackRooks = (blackRooks & fromMask) | toMask;
 
                 // Update castling flags
-                if (fromTile == 56) {
-                    blackQueenSideRookMoved = true; // a8
+                if (fromTile == a8) {
+                    blackQueenSideRookMoved = true;
                 }
-                if (fromTile == 63) {
-                    blackKingSideRookMoved = true; // h8
+                if (fromTile == h8) {
+                    blackKingSideRookMoved = true;
                 }
 
                 break;
@@ -377,14 +382,14 @@ void Board::movePiece(int fromTile, int toTile) {
                 blackKingMoved = true;
                 
                 // Handle castling
-                if (fromTile == 60) {    // e8
-                    if (toTile == 62) {  // g8 (kingside castle)
+                if (fromTile == e8) {
+                    if (toTile == g8) {  // Kingside castle
                         // Move the rook from h8 to f8
-                        blackRooks = (blackRooks & ~(1ULL << 63)) | (1ULL << 61);
+                        blackRooks = (blackRooks & ~(1ULL << h8)) | (1ULL << f8);
                         blackKingSideRookMoved = true;
-                    } else if (toTile == 58) {  // c8 (queenside castle)
+                    } else if (toTile == c8) {  // Queenside castle
                         // Move the rook from a8 to d8
-                        blackRooks = (blackRooks & ~(1ULL << 56)) | (1ULL << 59);
+                        blackRooks = (blackRooks & ~(1ULL << a8)) | (1ULL << d8);
                         blackQueenSideRookMoved = true;
                     }
                 }
@@ -397,4 +402,25 @@ void Board::movePiece(int fromTile, int toTile) {
     
     // Switch turns
     switchTurn();
+}
+
+const char* Board::getPieceChar(int tile) const {
+    U64 mask = (1ULL << tile);
+
+    // Unicode characters for chess pieces
+    // TODO: Make this more efficient
+    if (getWhitePawns() & mask)   return u8"\u2659";
+    if (getWhiteKnights() & mask) return u8"\u2658";
+    if (getWhiteBishops() & mask) return u8"\u2657";
+    if (getWhiteRooks() & mask)   return u8"\u2656";
+    if (getWhiteQueens() & mask)  return u8"\u2655";
+    if (getWhiteKing() & mask)    return u8"\u2654";
+    if (getBlackPawns() & mask)   return u8"\u265F";
+    if (getBlackKnights() & mask) return u8"\u265E";
+    if (getBlackBishops() & mask) return u8"\u265D";
+    if (getBlackRooks() & mask)   return u8"\u265C";
+    if (getBlackQueens() & mask)  return u8"\u265B";
+    if (getBlackKing() & mask)    return u8"\u265A";
+
+    return "_";
 }

@@ -34,6 +34,7 @@ private:
 
     // Turn
     Color turn;
+    int turnCount;
 
 public:
     Board();
@@ -60,6 +61,7 @@ public:
     [[nodiscard]] U64 getBlackKing() const;
     [[nodiscard]] Color getTurn() const;
     [[nodiscard]] Type getPieceType(int tile) const;
+    [[nodiscard]] const char* getPieceChar(int tile) const;
 
     // Castling getters
     [[nodiscard]] bool hasWhiteKingMoved() const;

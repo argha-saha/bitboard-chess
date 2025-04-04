@@ -52,7 +52,7 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
                 }
                 
                 // For double step, also check if the tile in between is empty
-                if (dRank == 2 && !board.isTileEmpty(from + 8)) {
+                if (dRank == 2 && (!board.isTileEmpty(from + 8) || fromRank != 1)) {
                     return false;
                 }
                 
@@ -82,7 +82,7 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
                 }
                 
                 // For double step, also check if the tile in between is empty
-                if (dRank == -2 && !board.isTileEmpty(from - 8)) {
+                if (dRank == -2 && (!board.isTileEmpty(from - 8) || fromRank != 6)) {
                     return false;
                 }
                 
@@ -392,7 +392,12 @@ bool Validator::hasLegalMoves(const Board &board, bool forWhite) {
     return false;
 }
 
-bool Validator::isCheckmate(const Board &board, bool whiteKing) {
+bool Validator::isCheckmate(const Board &board, bool whiteTurn) {
     // Checkmate occurs when the king is in check and there are no legal moves available
-    return isInCheck(board, whiteKing) && !hasLegalMoves(board, whiteKing);
+    return isInCheck(board, whiteTurn) && !hasLegalMoves(board, whiteTurn);
+}
+
+bool Validator::isStalemate(const Board &board, bool whiteTurn) {
+    // King is not in check but there are no legal moves available
+    return !isInCheck(board, whiteTurn) && !hasLegalMoves(board, whiteTurn);
 }

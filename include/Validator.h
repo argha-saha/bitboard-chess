@@ -20,6 +20,7 @@ public:
     static bool isInCheck(const Board& board, bool whiteKing);
     static bool hasLegalMoves(const Board& board, bool whiteTurn);
     static bool isCheckmate(const Board& board, bool whiteTurn);
+    static bool isStalemate(const Board& board, bool whiteTurn);
 };
 
 #endif // CHESS_VALIDATOR_H
