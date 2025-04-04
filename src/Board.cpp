@@ -145,6 +145,10 @@ int Board::getEnPassantTarget() const {
     return enPassantTarget;
 }
 
+int Board::getTurnCount() const {
+    return turnCount;
+}
+
 bool Board::hasWhiteKingMoved() const {
     return whiteKingMoved;
 }
@@ -303,6 +307,18 @@ int Board::tileToIndex(const std::string& tile) {
 void Board::movePiece(int fromTile, int toTile) {
     Type pieceType = getPieceType(fromTile);
     Color pieceColor = getPieceColor(fromTile);
+
+    if (pieceType == Type::PAWN && toTile == enPassantTarget) {
+        int capturedTile;
+
+        if (pieceColor == Color::WHITE) {
+            capturedTile = toTile - 8;
+        } else {
+            capturedTile = toTile + 8;
+        }
+
+        clearPiece(capturedTile);
+    }
     
     // Clear the destination tile first
     clearPiece(toTile);
@@ -424,6 +440,7 @@ void Board::movePiece(int fromTile, int toTile) {
     
     // Switch turns
     switchTurn();
+    ++turnCount;
 }
 
 const char* Board::getPieceChar(int tile) const {

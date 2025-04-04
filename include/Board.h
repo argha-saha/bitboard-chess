@@ -64,6 +64,7 @@ public:
     [[nodiscard]] Type getPieceType(int tile) const;
     [[nodiscard]] const char* getPieceChar(int tile) const;
     [[nodiscard]] int getEnPassantTarget() const;
+    [[nodiscard]] int getTurnCount() const;
 
     // Castling getters
     [[nodiscard]] bool hasWhiteKingMoved() const;
