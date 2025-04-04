@@ -304,7 +304,7 @@ int Board::tileToIndex(const std::string& tile) {
     return r * 8 + f;
 }
 
-void Board::movePiece(int fromTile, int toTile) {
+void Board::movePiece(int fromTile, int toTile, char promotion) {
     Type pieceType = getPieceType(fromTile);
     Color pieceColor = getPieceColor(fromTile);
 

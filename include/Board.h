@@ -93,7 +93,7 @@ public:
     void switchTurn();
     void clearPiece(int tile);
     void clearBoard();
-    void movePiece(int fromTile, int toTile);
+    void movePiece(int fromTile, int toTile, char promotion = '\0');
 
     static int getFile(int tile);
     static int getRank(int tile);

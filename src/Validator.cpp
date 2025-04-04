@@ -3,6 +3,7 @@
 bool Validator::isValidMove(const Board& board, const Move& move) {
     int from = move.getFromTile();
     int to = move.getToTile();
+    char promotion = move.getPromotion();
 
     // Bounds check
     if (from < 0 || from > 63 || to < 0 || to > 63) {
@@ -55,6 +56,11 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
                 if (dRank == 2 && (!board.isTileEmpty(from + 8) || fromRank != 1)) {
                     return false;
                 }
+
+                // Check for promotion
+                if (promotion != '\0' && toRank != 7) {
+                    return false;
+                }
                 
                 return Pawn::canMoveToTile(dFile, dRank, true);
             }
@@ -91,6 +97,11 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
                 
                 // For double step, also check if the tile in between is empty
                 if (dRank == -2 && (!board.isTileEmpty(from - 8) || fromRank != 6)) {
+                    return false;
+                }
+
+                // Check for promotion
+                if (promotion != '\0' && toRank != 0) {
                     return false;
                 }
                 

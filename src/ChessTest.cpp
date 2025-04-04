@@ -696,6 +696,19 @@ void enPassantTest() {
     // Game::printBoard(board);
 }
 
+void promotionTest() {
+    Board board;
+    board.clearBoard();
+
+    board.setWhitePawns(1ULL << e6);
+    assert(!Validator::isValidMove(board, Move(e6, e7, 'q')));
+
+    board.setWhitePawns(1ULL << e7);
+    assert(Validator::isValidMove(board, Move(e7, e8, 'q')));
+    board.movePiece(e7, e8, 'q');
+    Game::printBoard(board);
+}
+
 int main() {
     std::cout << "Running Tests...\n\n";
     
@@ -717,6 +730,7 @@ int main() {
     foolsMateTest();
     shortestStalemateTest();
     enPassantTest();
+    promotionTest();
     
     std::cout << "All tests passed successfully!\n";
 
