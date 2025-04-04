@@ -36,29 +36,27 @@ void Game::printBoard(const Board& b) {
 
 void Game::play() {
     exitGame = false;
-    bool turn;
+    bool whiteTurn;
 
     while (!exitGame) {
         board.initBoard();
         activeGame = true;
 
-        Validator validator;
-
         while (activeGame) {
-            turn = (board.getTurn() == Color::WHITE);
+            whiteTurn = (board.getTurn() == Color::WHITE);
 
             // Check for check or checkmate
-            if (validator.isCheckmate(board, turn)) {
+            if (Validator::isCheckmate(board, whiteTurn)) {
                 std::cout << "Checkmate!" << std::endl;
                 activeGame = false;
                 break;
             }
 
-            if (validator.isInCheck(board, turn)) {
+            if (Validator::isInCheck(board, whiteTurn)) {
                 std::cout << "Check!" << std::endl;
             }
 
-            if (validator.isStalemate(board, turn)) {
+            if (Validator::isStalemate(board, whiteTurn)) {
                 std::cout << "Stalemate!" << std::endl;
                 activeGame = false;
                 break;
@@ -91,7 +89,7 @@ void Game::play() {
             int fromTile = move.getFromTile();
             int toTile = move.getToTile();
 
-            if (validator.isValidMove(board, move)) {
+            if (Validator::isValidMove(board, move)) {
                 board.movePiece(fromTile, toTile);
             } else {
                 std::cout << "Invalid move!" << std::endl;
