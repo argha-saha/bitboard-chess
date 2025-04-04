@@ -62,7 +62,15 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
             // Diagonal captures
             if (std::abs(dFile) == 1 && dRank == 1) {
                 // Check if destination has an enemy piece
-                if (board.isTileEmpty(to) || board.getPieceColor(to) == Color::WHITE) {
+                // if (board.isTileEmpty(to) || board.getPieceColor(to) == Color::WHITE) {
+                //     return false;
+                // }
+
+                if (board.getPieceColor(to) == Color::WHITE) {
+                    return false;
+                }
+
+                if (board.isTileEmpty(to) && to != board.getEnPassantTarget()) {
                     return false;
                 }
                 
@@ -92,7 +100,15 @@ bool Validator::isValidMove(const Board& board, const Move& move) {
             // Diagonal captures
             if (std::abs(dFile) == 1 && dRank == -1) {
                 // Check if destination has an enemy piece
-                if (board.isTileEmpty(to) || board.getPieceColor(to) == Color::BLACK) {
+                // if (board.isTileEmpty(to) || board.getPieceColor(to) == Color::BLACK) {
+                //     return false;
+                // }
+
+                if (board.getPieceColor(to) == Color::BLACK) {
+                    return false;
+                }
+
+                if (board.isTileEmpty(to) && to != board.getEnPassantTarget()) {
                     return false;
                 }
                 

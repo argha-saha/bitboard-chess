@@ -690,8 +690,9 @@ void enPassantTest() {
     board.setBlackPawns(1ULL << d7);
     board.setTurn(Color::BLACK);
     board.movePiece(d7, d5);  // Move black pawn to d5
-    // assert(Validator::isValidMove(board, Move(d5, e6, '\0')));  // En passant
-    // board.movePiece(e5, d6);
+    assert(Validator::isValidMove(board, Move(e5, d6, '\0')));  // En passant
+    board.movePiece(e5, d6);
+    Game::printBoard(board);
 }
 
 int main() {

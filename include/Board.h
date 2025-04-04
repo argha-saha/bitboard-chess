@@ -30,7 +30,8 @@ private:
     bool blackKingSideRookMoved;
     bool blackQueenSideRookMoved;
 
-    // TODO: Add en passant logic
+    // En passant
+    int enPassantTarget;
 
     // Turn
     Color turn;
@@ -62,6 +63,7 @@ public:
     [[nodiscard]] Color getTurn() const;
     [[nodiscard]] Type getPieceType(int tile) const;
     [[nodiscard]] const char* getPieceChar(int tile) const;
+    [[nodiscard]] int getEnPassantTarget() const;
 
     // Castling getters
     [[nodiscard]] bool hasWhiteKingMoved() const;
@@ -84,6 +86,7 @@ public:
     void setBlackRooks(U64 value);
     void setBlackQueens(U64 value);
     void setBlackKing(U64 value);
+    void setEnPassantTarget(int target);
     void setTurn(Color color);
 
     void switchTurn();

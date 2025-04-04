@@ -23,6 +23,7 @@ void Board::initBoard() {
     blackKingMoved = false;
     blackKingSideRookMoved = false;
     blackQueenSideRookMoved = false;
+    enPassantTarget = -1;
     turn = Color::WHITE;
     turnCount = 0;
 }
@@ -140,6 +141,10 @@ Type Board::getPieceType(int tile) const {
     return Type::NONE;
 }
 
+int Board::getEnPassantTarget() const {
+    return enPassantTarget;
+}
+
 bool Board::hasWhiteKingMoved() const {
     return whiteKingMoved;
 }
@@ -213,6 +218,10 @@ void Board::setBlackKing(U64 value) {
 
 void Board::setTurn(Color color) {
     turn = color;
+}
+
+void Board::setEnPassantTarget(int target) {
+    enPassantTarget = target;
 }
 
 void Board::switchTurn() {
@@ -297,6 +306,9 @@ void Board::movePiece(int fromTile, int toTile) {
     
     // Clear the destination tile first
     clearPiece(toTile);
+
+    // Clear en passant target
+    enPassantTarget = -1;
     
     // Create masks for the move
     U64 fromMask = ~(1ULL << fromTile);
@@ -307,6 +319,11 @@ void Board::movePiece(int fromTile, int toTile) {
         switch (pieceType) {
             case Type::PAWN:
                 whitePawns = (whitePawns & fromMask) | toMask;
+
+                if (toTile == fromTile + 16) {
+                    enPassantTarget = toTile - 8;
+                }
+
                 break;
             case Type::KNIGHT:
                 whiteKnights = (whiteKnights & fromMask) | toMask;
@@ -355,6 +372,11 @@ void Board::movePiece(int fromTile, int toTile) {
         switch (pieceType) {
             case Type::PAWN:
                 blackPawns = (blackPawns & fromMask) | toMask;
+
+                if (toTile == fromTile - 16) {
+                    enPassantTarget = toTile + 8;
+                }
+
                 break;
             case Type::KNIGHT:
                 blackKnights = (blackKnights & fromMask) | toMask;
