@@ -705,8 +705,19 @@ void promotionTest() {
 
     board.setWhitePawns(1ULL << e7);
     assert(Validator::isValidMove(board, Move(e7, e8, 'q')));
+
+    board.setWhitePawns(1ULL << e7 | 1ULL << f7 | 1ULL << g7 | 1ULL << h7);
+
+    // Game::printBoard(board);
     board.movePiece(e7, e8, 'q');
-    Game::printBoard(board);
+    board.setTurn(Color::WHITE);
+    board.movePiece(f7, f8, 'r');
+    board.setTurn(Color::WHITE);
+    board.movePiece(g7, g8, 'b');
+    board.setTurn(Color::WHITE);
+    board.movePiece(h7, h8, 'n');
+    board.setTurn(Color::WHITE);
+    // Game::printBoard(board);
 }
 
 int main() {

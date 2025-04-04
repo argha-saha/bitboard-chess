@@ -1,4 +1,5 @@
 #include "Board.h"
+#include <iostream>
 
 Board::Board() {
     initBoard();
@@ -308,6 +309,7 @@ void Board::movePiece(int fromTile, int toTile, char promotion) {
     Type pieceType = getPieceType(fromTile);
     Color pieceColor = getPieceColor(fromTile);
 
+    // En passant capture logic
     if (pieceType == Type::PAWN && toTile == enPassantTarget) {
         int capturedTile;
 
@@ -334,10 +336,32 @@ void Board::movePiece(int fromTile, int toTile, char promotion) {
     if (pieceColor == Color::WHITE) {
         switch (pieceType) {
             case Type::PAWN:
-                whitePawns = (whitePawns & fromMask) | toMask;
-
                 if (toTile == fromTile + 16) {
                     enPassantTarget = toTile - 8;
+                }
+
+                // Promotion logic
+                if (promotion == '\0') {
+                    whitePawns = (whitePawns & fromMask) | toMask;
+                } else {
+                    whitePawns = whitePawns & fromMask;
+
+                    switch (promotion) {
+                        case 'q':
+                            whiteQueens = whiteQueens | toMask;
+                            break;
+                        case 'r':
+                            whiteRooks = whiteRooks | toMask;
+                            break;
+                        case 'b':
+                            whiteBishops = whiteBishops | toMask;
+                            break;
+                        case 'n':
+                            whiteKnights = whiteKnights | toMask;
+                            break;
+                        default:
+                            break;  // Invalid
+                    }
                 }
 
                 break;
@@ -387,10 +411,32 @@ void Board::movePiece(int fromTile, int toTile, char promotion) {
     } else {
         switch (pieceType) {
             case Type::PAWN:
-                blackPawns = (blackPawns & fromMask) | toMask;
-
                 if (toTile == fromTile - 16) {
                     enPassantTarget = toTile + 8;
+                }
+
+                // Promotion logic
+                if (promotion == '\0') {
+                    blackPawns = (blackPawns & fromMask) | toMask;
+                } else {
+                    blackPawns = blackPawns & fromMask;
+
+                    switch (promotion) {
+                        case 'q':
+                            blackQueens = blackQueens | toMask;
+                            break;
+                        case 'r':
+                            blackRooks = blackRooks | toMask;
+                            break;
+                        case 'b':
+                            blackBishops = blackBishops | toMask;
+                            break;
+                        case 'n':
+                            blackKnights = blackKnights | toMask;
+                            break;
+                        default:
+                            break;  // Invalid
+                    }
                 }
 
                 break;
