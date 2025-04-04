@@ -682,6 +682,18 @@ void shortestStalemateTest() {
     // Game::printBoard(board);
 }
 
+void enPassantTest() {
+    Board board;
+    board.clearBoard();
+
+    board.setWhitePawns(1ULL << e5);
+    board.setBlackPawns(1ULL << d7);
+    board.setTurn(Color::BLACK);
+    board.movePiece(d7, d5);  // Move black pawn to d5
+    // assert(Validator::isValidMove(board, Move(d5, e6, '\0')));  // En passant
+    // board.movePiece(e5, d6);
+}
+
 int main() {
     std::cout << "Running Tests...\n\n";
     
@@ -702,6 +714,7 @@ int main() {
     pawnMovesTest();
     foolsMateTest();
     shortestStalemateTest();
+    enPassantTest();
     
     std::cout << "All tests passed successfully!\n";
 
