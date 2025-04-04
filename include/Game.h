@@ -16,10 +16,8 @@ private:
 
 public:
     Game();
-    // [[nodiscard]] const char* getPieceChar(int tile) const;
     void printBoard() const;
     static void printBoard(const Board& b);
-    Color getOppositeColor();
     void play();
 };
 

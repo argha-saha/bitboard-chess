@@ -24,6 +24,7 @@ void Board::initBoard() {
     blackKingSideRookMoved = false;
     blackQueenSideRookMoved = false;
     turn = Color::WHITE;
+    turnCount = 0;
 }
 
 U64 Board::getOccupancy() const {
@@ -369,7 +370,7 @@ void Board::movePiece(int fromTile, int toTile) {
                     blackQueenSideRookMoved = true; // a8
                 }
                 if (fromTile == 63) {
-                    blackKingSideRookMoved = true; // h8
+                    blackKingSideRookMoved = true;  // h8
                 }
 
                 break;
@@ -408,18 +409,18 @@ const char* Board::getPieceChar(int tile) const {
 
     // Unicode characters for chess pieces
     // TODO: Make this more efficient
-    if (getWhitePawns() & mask) return u8"\u2659";
+    if (getWhitePawns() & mask)   return u8"\u2659";
     if (getWhiteKnights() & mask) return u8"\u2658";
     if (getWhiteBishops() & mask) return u8"\u2657";
-    if (getWhiteRooks() & mask) return u8"\u2656";
-    if (getWhiteQueens() & mask) return u8"\u2655";
-    if (getWhiteKing() & mask) return u8"\u2654";
-    if (getBlackPawns() & mask) return u8"\u265F";
+    if (getWhiteRooks() & mask)   return u8"\u2656";
+    if (getWhiteQueens() & mask)  return u8"\u2655";
+    if (getWhiteKing() & mask)    return u8"\u2654";
+    if (getBlackPawns() & mask)   return u8"\u265F";
     if (getBlackKnights() & mask) return u8"\u265E";
     if (getBlackBishops() & mask) return u8"\u265D";
-    if (getBlackRooks() & mask) return u8"\u265C";
-    if (getBlackQueens() & mask) return u8"\u265B";
-    if (getBlackKing() & mask) return u8"\u265A";
+    if (getBlackRooks() & mask)   return u8"\u265C";
+    if (getBlackQueens() & mask)  return u8"\u265B";
+    if (getBlackKing() & mask)    return u8"\u265A";
 
     return "_";
 }

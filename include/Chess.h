@@ -32,4 +32,8 @@ enum Tiles {
     a8, b8, c8, d8, e8, f8, g8, h8
 };
 
+enum File {
+    a, b, c, d, e, f, g, h
+};
+
 #endif // CHESS_H
