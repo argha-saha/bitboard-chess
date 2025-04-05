@@ -678,6 +678,7 @@ void shortestStalemateTest() {
 
     board.movePiece(c8, e6);  // Qe6
     assert(Validator::isStalemate(board, board.getTurn() == Color::WHITE));
+    assert(Validator::checkGameState(board, board.getTurn() == Color::WHITE) == State::STALEMATE);
 
     // Game::printBoard(board);
 }

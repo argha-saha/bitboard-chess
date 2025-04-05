@@ -428,3 +428,14 @@ bool Validator::isStalemate(const Board &board, bool whiteTurn) {
     // King is not in check but there are no legal moves available
     return !isInCheck(board, whiteTurn) && !hasLegalMoves(board, whiteTurn);
 }
+
+State Validator::checkGameState(const Board& board, bool whiteTurn) {
+    bool inCheck = isInCheck(board, whiteTurn);
+
+    if (hasLegalMoves(board, whiteTurn)) {
+        return inCheck ? State::CHECK : State::NORMAL;
+    }
+
+    // No legal moves available
+    return inCheck ? State::CHECKMATE : State::STALEMATE;
+}

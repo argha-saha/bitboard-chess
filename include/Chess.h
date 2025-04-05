@@ -36,4 +36,11 @@ enum File {
     a, b, c, d, e, f, g, h
 };
 
+enum class State {
+    NORMAL,
+    CHECK,
+    CHECKMATE,
+    STALEMATE
+};
+
 #endif // CHESS_H
