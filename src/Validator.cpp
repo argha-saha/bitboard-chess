@@ -395,6 +395,52 @@ bool Validator::hasLegalMoves(const Board &board, bool forWhite) {
     U64 pieces = board.getOccupancy(forWhite);
     Board tempBoard;
 
+    // Find king position
+    U64 kingBitboard = forWhite ? board.getWhiteKing() : board.getBlackKing();
+    int kingTile = kingBitboard ? __builtin_ctzll(kingBitboard) : -1;
+
+    if (kingTile == -1) {
+        return false;
+    }
+
+    bool inCheck = isUnderThreat(board, kingTile, !forWhite);
+
+    int kingFile = Board::getFile(kingTile);
+    int kingRank = Board::getRank(kingTile);
+
+    // Test 8 possible tiles around king
+    for (int dFile = -1; dFile <= 1; ++dFile) {
+        for (int dRank = -1; dRank <= 1; ++dRank) {
+            if (dFile == 0 && dRank == 0) {
+                continue;  // Skip no movement
+            }
+
+            int toFile = kingFile + dFile;
+            int toRank = kingRank + dRank;
+
+            if (toFile < 0 || toFile > 7 || toRank < 0 || toRank > 7) {
+                continue;  // Out of bounds
+            }
+
+            int toTile = toRank * 8 + toFile;
+            Move move(kingTile, toTile, '\0');
+
+            if (isValidMove(board, move)) {
+                tempBoard = board;
+                tempBoard.movePiece(kingTile, toTile);
+
+                int tempKingTile = toTile;
+
+                if (!isUnderThreat(board, tempKingTile, !forWhite)) {
+                    return true;  // Found a legal move
+                }
+            }
+        }
+    }
+
+    // Remove king from pieces to check other pieces
+    pieces &= ~(1ULL << kingTile);
+    
     while (pieces) {
         int fromTile = __builtin_ctzll(pieces);
 
@@ -402,7 +448,6 @@ bool Validator::hasLegalMoves(const Board &board, bool forWhite) {
         pieces &= pieces - 1;
 
         for (int toTile = 0; toTile < 64; ++toTile) {
-            // TODO: Might need to adjust this to work for all promotions
             Move move(fromTile, toTile, '\0');
             
             if (isValidMove(board, move)) {
@@ -419,16 +464,6 @@ bool Validator::hasLegalMoves(const Board &board, bool forWhite) {
     return false;
 }
 
-bool Validator::isCheckmate(const Board &board, bool whiteTurn) {
-    // Checkmate occurs when the king is in check and there are no legal moves available
-    return isInCheck(board, whiteTurn) && !hasLegalMoves(board, whiteTurn);
-}
-
-bool Validator::isStalemate(const Board &board, bool whiteTurn) {
-    // King is not in check but there are no legal moves available
-    return !isInCheck(board, whiteTurn) && !hasLegalMoves(board, whiteTurn);
-}
-
 State Validator::checkGameState(const Board& board, bool whiteTurn) {
     bool inCheck = isInCheck(board, whiteTurn);
 
@@ -438,4 +473,14 @@ State Validator::checkGameState(const Board& board, bool whiteTurn) {
 
     // No legal moves available
     return inCheck ? State::CHECKMATE : State::STALEMATE;
+}
+
+bool Validator::isCheckmate(const Board &board, bool whiteTurn) {
+    // Checkmate occurs when the king is in check and there are no legal moves available
+    return checkGameState(board, whiteTurn) == State::CHECKMATE;
+}
+
+bool Validator::isStalemate(const Board &board, bool whiteTurn) {
+    // King is not in check but there are no legal moves available
+    return checkGameState(board, whiteTurn) == State::STALEMATE;
 }

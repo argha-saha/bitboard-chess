@@ -642,8 +642,8 @@ void foolsMateTest() {
     bool turn = board.getTurn() == Color::WHITE;
 
     assert(Validator::isInCheck(board, turn));
-    assert(Validator::isCheckmate(board, turn));
-    assert(!Validator::isStalemate(board, turn));
+    assert(Validator::checkGameState(board, turn) == State::CHECKMATE);
+    assert(Validator::checkGameState(board, turn) != State::STALEMATE);
 }
 
 void shortestStalemateTest() {
@@ -677,9 +677,8 @@ void shortestStalemateTest() {
     board.movePiece(f7, g6);  // Kg6
 
     board.movePiece(c8, e6);  // Qe6
-    assert(Validator::isStalemate(board, board.getTurn() == Color::WHITE));
-    assert(Validator::checkGameState(board, board.getTurn() == Color::WHITE) == State::STALEMATE);
 
+    assert(Validator::checkGameState(board, board.getTurn() == Color::WHITE) == State::STALEMATE);
     // Game::printBoard(board);
 }
 
