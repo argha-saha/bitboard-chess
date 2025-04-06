@@ -36,33 +36,31 @@ void Game::printBoard(const Board& b) {
 
 void Game::play() {
     exitGame = false;
-    bool whiteTurn;
 
     while (!exitGame) {
         board.initBoard();
         activeGame = true;
+        State state;
+        bool whiteTurn;
 
         while (activeGame) {
             whiteTurn = (board.getTurn() == Color::WHITE);
+            state = Validator::checkGameState(board, whiteTurn);
 
-            // Check for check or checkmate
-            if (Validator::isCheckmate(board, whiteTurn)) {
+            printBoard();
+
+            if (state == State::CHECKMATE) {
                 std::cout << "Checkmate!" << std::endl;
                 activeGame = false;
                 break;
-            }
-
-            if (Validator::isInCheck(board, whiteTurn)) {
+            } else if (state == State::CHECK) {
                 std::cout << "Check!" << std::endl;
-            }
-
-            if (Validator::isStalemate(board, whiteTurn)) {
+            } else if (state == State::STALEMATE) {
                 std::cout << "Stalemate!" << std::endl;
                 activeGame = false;
                 break;
             }
 
-            printBoard();
             Color turn = board.getTurn();
             
             if (turn == Color::WHITE) {
