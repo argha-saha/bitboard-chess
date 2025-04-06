@@ -47,8 +47,7 @@ U64 Board::getOccupancy(bool white) const {
 
 bool Board::isTileEmpty(int tile) const {
     U64 mask = (1ULL << tile);
-    bool res = getOccupancy() & mask;
-    return res == 0ULL;
+    return !(getOccupancy() & mask);
 }
 
 Color Board::getPieceColor(int tile) const {
@@ -126,18 +125,25 @@ Color Board::getTurn() const {
 
 Type Board::getPieceType(int tile) const {
     U64 mask = (1ULL << tile);
-    if (whitePawns & mask)   return Type::PAWN;
-    if (whiteKnights & mask) return Type::KNIGHT;
-    if (whiteBishops & mask) return Type::BISHOP;
-    if (whiteRooks & mask)   return Type::ROOK;
-    if (whiteQueens & mask)  return Type::QUEEN;
-    if (whiteKing & mask)    return Type::KING;
-    if (blackPawns & mask)   return Type::PAWN;
-    if (blackKnights & mask) return Type::KNIGHT;
-    if (blackBishops & mask) return Type::BISHOP;
-    if (blackRooks & mask)   return Type::ROOK;
-    if (blackQueens & mask)  return Type::QUEEN;
-    if (blackKing & mask)    return Type::KING;
+
+    if (isTileEmpty(tile)) {
+        return Type::NONE;
+    } else if (isWhite(tile)) {
+        if (whitePawns & mask)   return Type::PAWN;
+        if (whiteKnights & mask) return Type::KNIGHT;
+        if (whiteBishops & mask) return Type::BISHOP;
+        if (whiteRooks & mask)   return Type::ROOK;
+        if (whiteQueens & mask)  return Type::QUEEN;
+        if (whiteKing & mask)    return Type::KING;
+    } else {
+        if (blackPawns & mask)   return Type::PAWN;
+        if (blackKnights & mask) return Type::KNIGHT;
+        if (blackBishops & mask) return Type::BISHOP;
+        if (blackRooks & mask)   return Type::ROOK;
+        if (blackQueens & mask)  return Type::QUEEN;
+        if (blackKing & mask)    return Type::KING;
+    }
+
     return Type::NONE;
 }
 
@@ -492,19 +498,18 @@ const char* Board::getPieceChar(int tile) const {
     U64 mask = (1ULL << tile);
 
     // Unicode characters for chess pieces
-    // TODO: Make this more efficient
-    if (getWhitePawns() & mask)   return u8"\u2659";
-    if (getWhiteKnights() & mask) return u8"\u2658";
-    if (getWhiteBishops() & mask) return u8"\u2657";
-    if (getWhiteRooks() & mask)   return u8"\u2656";
-    if (getWhiteQueens() & mask)  return u8"\u2655";
-    if (getWhiteKing() & mask)    return u8"\u2654";
-    if (getBlackPawns() & mask)   return u8"\u265F";
-    if (getBlackKnights() & mask) return u8"\u265E";
-    if (getBlackBishops() & mask) return u8"\u265D";
-    if (getBlackRooks() & mask)   return u8"\u265C";
-    if (getBlackQueens() & mask)  return u8"\u265B";
-    if (getBlackKing() & mask)    return u8"\u265A";
+    if (whitePawns & mask)   return u8"\u2659";
+    if (whiteKnights & mask) return u8"\u2658";
+    if (whiteBishops & mask) return u8"\u2657";
+    if (whiteRooks & mask)   return u8"\u2656";
+    if (whiteQueens & mask)  return u8"\u2655";
+    if (whiteKing & mask)    return u8"\u2654";
+    if (blackPawns & mask)   return u8"\u265F";
+    if (blackKnights & mask) return u8"\u265E";
+    if (blackBishops & mask) return u8"\u265D";
+    if (blackRooks & mask)   return u8"\u265C";
+    if (blackQueens & mask)  return u8"\u265B";
+    if (blackKing & mask)    return u8"\u265A";
 
     return "_";
 }

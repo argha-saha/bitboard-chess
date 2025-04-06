@@ -21,7 +21,7 @@ public:
     static bool hasLegalMoves(const Board& board, bool whiteTurn);
     static bool isCheckmate(const Board& board, bool whiteTurn);
     static bool isStalemate(const Board& board, bool whiteTurn);
-    static State checkGameState(const Board& board, bool whiteTurn);
+    [[nodiscard]] static State checkGameState(const Board& board, bool whiteTurn);
 };
 
 #endif // CHESS_VALIDATOR_H
